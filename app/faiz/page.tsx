@@ -66,7 +66,7 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="relative z-10 max-w-[900px] text-center mb-24">
+        <div className="relative z-20 max-w-[900px] text-center mb-24">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
