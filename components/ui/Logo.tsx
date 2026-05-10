@@ -17,7 +17,7 @@ export default function Logo({ light = true, className = "", size = "small" }: L
         <img 
           src="/biglogo.svg" 
           alt="Lutfullah Khan Archive" 
-          className="h-[253px] w-auto object-contain"
+          className="h-[150px] md:h-[253px] w-auto object-contain"
           style={{ filter: light ? 'none' : 'invert(1) brightness(0)' }}
         />
       </div>
@@ -25,14 +25,14 @@ export default function Logo({ light = true, className = "", size = "small" }: L
   }
 
   return (
-    <Link href="/" className={`inline-block relative h-[62px] w-[134px] transition-opacity hover:opacity-80 ${className}`}>
-      <span className={`absolute left-0 top-0 font-body text-[17.3px] leading-none ${textColor}`}>
+    <Link href="/" className={`inline-block relative h-[56px] md:h-[62px] w-[120px] md:w-[134px] transition-opacity hover:opacity-80 scale-90 md:scale-100 origin-left ${className}`}>
+      <span className={`absolute left-0 top-0 font-body text-[15px] md:text-[17.3px] leading-none ${textColor}`}>
         the
       </span>
-      <span className={`absolute left-0 top-[22px] font-heading text-body-xl leading-none ${textColor}`}>
+      <span className={`absolute left-0 top-[20px] md:top-[22px] font-heading text-[18px] md:text-body-xl leading-none ${textColor}`}>
         Lutfullah Khan
       </span>
-      <span className={`absolute left-[80px] top-[42px] font-body text-[17.3px] leading-none ${textColor}`}>
+      <span className={`absolute left-[70px] md:left-[80px] top-[38px] md:top-[42px] font-body text-[15px] md:text-[17.3px] leading-none ${textColor}`}>
         archive
       </span>
     </Link>

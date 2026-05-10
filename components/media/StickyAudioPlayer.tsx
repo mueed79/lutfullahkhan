@@ -51,12 +51,12 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
             animate={{ y: isMinimized ? 120 : 0 }}
             exit={{ y: 100 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className={`fixed bottom-0 left-0 right-0 h-[80px] ${finalBgColor} ${finalTextColor} z-50 flex items-center px-12 transition-colors duration-700 ease-in-out border-t border-white/10`}
+            className={`fixed bottom-0 left-0 right-0 h-[70px] md:h-[80px] ${finalBgColor} ${finalTextColor} z-50 flex items-center px-4 md:px-12 transition-colors duration-700 ease-in-out border-t border-white/10`}
           >
             <audio ref={audioRef} src={src} onEnded={() => setIsPlaying(false)} />
 
-            {/* Left: Track List */}
-            <div className="flex items-center gap-6 w-1/4">
+            {/* Left: Track List (Hidden on Mobile) */}
+            <div className="hidden md:flex items-center gap-6 w-1/4">
               {tracks.map((track) => (
                 <div key={track} className="relative group cursor-pointer">
                   <span className={`text-[11px] uppercase tracking-[0.2em] transition-all duration-300 font-sans ${
@@ -71,17 +71,17 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
             </div>
 
             {/* Center: Waveform & Play Control */}
-            <div className="flex-1 flex items-center justify-center gap-8">
+            <div className="flex-1 flex items-center justify-center gap-4 md:gap-8">
               <button 
                 onClick={togglePlay}
-                className={`w-12 h-12 rounded-full border border-white/40 flex items-center justify-center hover:scale-105 transition-transform`}
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/40 flex items-center justify-center hover:scale-105 transition-transform shrink-0`}
               >
-                {isPlaying ? <Pause size={20} fill="white" className="text-white" /> : <Play size={20} className="ml-1 text-white" fill="white" />}
+                {isPlaying ? <Pause size={18} fill="white" className="text-white" /> : <Play size={18} className="ml-1 text-white" fill="white" />}
               </button>
 
-              {/* Waveform Visualization */}
-              <div className="flex items-center gap-[3px] h-12 w-[600px] overflow-hidden">
-                {[...Array(80)].map((_, i) => (
+              {/* Waveform Visualization (Simplified on Mobile) */}
+              <div className="flex items-center gap-[2px] md:gap-[3px] h-10 md:h-12 w-[100px] md:w-[600px] overflow-hidden opacity-50 md:opacity-100">
+                {[...Array(20)].map((_, i) => (
                   <motion.div
                     key={i}
                     animate={{ 
@@ -94,23 +94,42 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
                       ease: "easeInOut"
                     }}
                     className="w-[2px] rounded-full"
-                    style={{ backgroundColor: waveformColor, opacity: i > 20 && i < 60 ? 1 : 0.4 }}
+                    style={{ backgroundColor: waveformColor }}
                   />
                 ))}
+                {/* Desktop extended bars */}
+                <div className="hidden md:flex items-center gap-[3px]">
+                   {[...Array(60)].map((_, i) => (
+                    <motion.div
+                      key={i + 20}
+                      animate={{ 
+                        height: isPlaying ? [10, 30, 15, 40, 10][(i + 20) % 5] : 4 
+                      }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 0.8, 
+                        delay: (i + 20) * 0.02,
+                        ease: "easeInOut"
+                      }}
+                      className="w-[2px] rounded-full"
+                      style={{ backgroundColor: waveformColor }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Right: Track Info */}
-            <div className="w-1/4 flex items-center justify-end gap-6">
+            <div className="w-auto md:w-1/4 flex items-center justify-end gap-3 md:gap-6">
               <div className="text-right">
-                <p className="text-[18px] font-heading italic font-light leading-none">{trackTitle}</p>
-                <p className="text-[11px] opacity-60 mt-2 font-mono">0:05</p>
+                <p className="text-[14px] md:text-[18px] font-heading italic font-light leading-none whitespace-nowrap">{trackTitle}</p>
+                <p className="hidden md:block text-[11px] opacity-60 mt-2 font-mono">0:05</p>
               </div>
               <button 
                 onClick={() => setIsMinimized(true)}
-                className={`w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors group`}
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors group shrink-0`}
               >
-                <ChevronUp size={18} className="rotate-180 group-hover:translate-y-[2px] transition-transform" />
+                <ChevronUp size={16} className="rotate-180 group-hover:translate-y-[2px] transition-transform" />
               </button>
             </div>
           </motion.div>

@@ -48,12 +48,12 @@ export default function Header() {
         backdropFilter: scrolled || isDropdownOpen ? "blur(12px)" : "blur(0px)",
       }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed top-0 left-0 w-full z-50 h-[80px] flex items-center px-12 pointer-events-none transition-colors border-b border-white/5"
+      className="fixed top-0 left-0 w-full z-50 h-[80px] flex items-center px-6 md:px-12 pointer-events-none transition-colors border-b border-white/5"
     >
       <div className="container mx-auto flex items-center justify-between pointer-events-auto">
         <Logo light={true} />
         
-        <nav className="flex items-center gap-10">
+        <nav className="flex items-center gap-6 md:gap-10">
           {/* Stories Dropdown Trigger */}
           <div 
             className="relative"
@@ -77,14 +77,14 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full right-0 mt-4 w-[600px] bg-[#1C1917] border border-white/20 rounded-sm p-8 shadow-2xl"
+                  className="absolute top-full right-[-20px] md:right-0 mt-4 w-[calc(100vw-2rem)] md:w-[600px] bg-[#1C1917] border border-white/20 rounded-sm p-6 md:p-8 shadow-2xl"
                 >
-                  <div className="grid grid-cols-2 gap-x-12 gap-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
                     {storyItems.map((item) => (
                       <Link
                         key={item}
                         href={item === "Faiz Ahmed Faiz" ? "/faiz" : "#"}
-                        className="text-[14px] text-white hover:text-[var(--text-text-brand-primary)] transition-all font-medium hover:translate-x-1 inline-block"
+                        className="text-[14px] text-white hover:text-[var(--text-text-brand-primary)] transition-all font-medium hover:translate-x-1 inline-block py-1 md:py-0"
                       >
                         {item}
                       </Link>

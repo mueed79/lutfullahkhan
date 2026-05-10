@@ -10,7 +10,7 @@ export default function Home() {
     <div className="bg-white flex flex-col w-full overflow-x-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative h-[1200px] w-full bg-[#292524] overflow-hidden">
+      <section className="relative h-screen md:h-[1200px] w-full bg-[#292524] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-80">
           <img 
@@ -22,41 +22,41 @@ export default function Home() {
         </div>
 
         {/* Narrative Text */}
-        <div className="absolute left-[120px] top-[300px] flex gap-[200px] text-[var(--text-text-light-primary)]">
+        <div className="absolute left-6 md:left-[120px] top-[20%] md:top-[300px] flex flex-col md:flex-row gap-12 md:gap-[200px] text-[var(--text-text-light-primary)] w-[calc(100%-3rem)] md:w-auto">
           <div className="flex flex-col">
-            <span className="font-body text-body-2xl">time is passing.</span>
+            <span className="font-body text-[24px] md:text-body-2xl">time is passing.</span>
             <div className="flex items-center gap-3">
-              <span className="font-body text-body-2xl">it</span>
-              <span className="font-heading italic font-ultra-light text-display-md">always</span>
-              <span className="font-body text-body-2xl">is.</span>
+              <span className="font-body text-[24px] md:text-body-2xl">it</span>
+              <span className="font-heading italic font-ultra-light text-[42px] md:text-display-md">always</span>
+              <span className="font-body text-[24px] md:text-body-2xl">is.</span>
             </div>
           </div>
-          <div className="flex flex-col font-body text-body-2xl">
+          <div className="flex flex-col font-body text-[24px] md:text-body-2xl">
             <span className="text-[var(--text-text-light-primary)]">we live it.</span>
             <span className="text-[var(--text-text-light-transparent)]">we forget it.</span>
           </div>
         </div>
 
         {/* Bottom Question */}
-        <div className="absolute left-[900px] top-[812px] flex items-center gap-3 text-[var(--text-text-light-primary)]">
-          <span className="font-body text-body-2xl whitespace-nowrap">are you trying to</span>
-          <span className="font-heading italic font-ultra-light text-display-md">hold on?</span>
+        <div className="absolute left-6 md:left-[900px] bottom-[20%] md:top-[812px] flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 text-[var(--text-text-light-primary)] w-[calc(100%-3rem)] md:w-auto">
+          <span className="font-body text-[24px] md:text-body-2xl whitespace-nowrap">are you trying to</span>
+          <span className="font-heading italic font-ultra-light text-[42px] md:text-display-md">hold on?</span>
         </div>
 
         {/* Attribution */}
-        <div className="absolute right-[141px] top-[1128px] text-white font-body text-body-xl opacity-70">
+        <div className="absolute right-6 md:right-[141px] bottom-12 md:top-[1128px] text-white font-body text-[14px] md:text-body-xl opacity-70">
           photo by Julian Walter
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute left-[714px] top-[1114px] flex flex-col items-center gap-1 opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
-          <span className="text-white text-[16px] uppercase tracking-[2px] font-body leading-[var(--line-height-body-md)]">Scroll</span>
-          <ChevronDown className="text-white h-5 w-5" />
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-8 md:top-[1114px] md:left-[714px] flex flex-col items-center gap-1 opacity-70 cursor-pointer hover:opacity-100 transition-opacity">
+          <span className="text-white text-[12px] md:text-[16px] uppercase tracking-[2px] font-body">Scroll</span>
+          <ChevronDown className="text-white h-4 w-4 md:h-5 md:w-5" />
         </div>
       </section>
 
       {/* 2. QUOTE BANNER / WAVEFORM */}
-      <section className="relative h-[1055px] w-full bg-[#f1e1d0] overflow-hidden">
+      <section className="relative min-h-screen md:h-[1055px] w-full bg-[#f1e1d0] overflow-hidden py-20 px-6 md:p-0">
         {/* Noise Overlay */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-40 z-0"
@@ -64,57 +64,57 @@ export default function Home() {
         />
 
         {/* Floating Waveform Image */}
-        <div className="absolute left-[19px] top-[216px] w-[677px] h-[395px] z-10">
-          <img src="/waveform.png" alt="Waveform" className="w-full h-full object-cover" />
+        <div className="relative md:absolute md:left-[19px] md:top-[216px] w-full md:w-[677px] h-auto md:h-[395px] z-10 mt-20 md:mt-0">
+          <img src="/waveform.png" alt="Waveform" className="w-full h-full object-contain md:object-cover" />
         </div>
 
         {/* Vertical Line & Quote */}
-        <div className="absolute left-[48px] top-[101px] flex gap-6 items-start z-10">
-          <div className="w-[2px] h-[80px] bg-[var(--text-text-brand-primary)]" />
-          <div className="flex flex-col font-body text-body-1-5xl text-[var(--text-text-black-primary)]">
+        <div className="absolute left-6 md:left-[48px] top-12 md:top-[101px] flex gap-4 md:gap-6 items-start z-10">
+          <div className="w-[2px] h-[60px] md:h-[80px] bg-[var(--text-text-brand-primary)]" />
+          <div className="flex flex-col font-body text-[18px] md:text-body-1-5xl text-[var(--text-text-black-primary)]">
             <span>a collection of moments</span>
-            <div className="flex items-baseline gap-2">
+            <div className="flex flex-wrap items-baseline gap-2">
               <span>someone </span>
-              <span className="font-heading italic font-ultra-light text-display-md">refused</span>
+              <span className="font-heading italic font-ultra-light text-[32px] md:text-display-md">refused</span>
               <span> to forget.</span>
             </div>
           </div>
         </div>
 
         {/* Archive Description */}
-        <div className="absolute left-[48px] top-[650px] max-w-[542px] z-10">
-          <p className="font-body text-body-xl text-[var(--text-text-black-primary)]">
-            <span className="underline cursor-pointer">Lutfullah Khan</span> spent his life recording voices, music, speeches, and conversations – he devoted his attention to preserving a cultural moment. This archive is the result of that care: a living record of cultural memory, where sound becomes a bridge between who we were, who we are, and who we might still become.
+        <div className="relative md:absolute left-0 md:left-[48px] md:top-[650px] max-w-full md:max-w-[542px] z-10 mt-12 md:mt-0">
+          <p className="font-body text-[16px] md:text-body-xl text-[var(--text-text-black-primary)] leading-relaxed">
+            <span className="underline cursor-pointer font-bold">Lutfullah Khan</span> spent his life recording voices, music, speeches, and conversations – he devoted his attention to preserving a cultural moment. This archive is the result of that care: a living record of cultural memory, where sound becomes a bridge between who we were, who we are, and who we might still become.
           </p>
         </div>
 
         {/* Large Signature Logo */}
-        <div className="absolute right-[88px] top-[650px] z-10">
+        <div className="relative md:absolute right-0 md:right-[88px] md:top-[650px] z-10 mt-12 md:mt-0 flex justify-center md:block">
           <Logo size="large" light={false} />
         </div>
 
         {/* Explore Button */}
-        <div className="absolute left-[714px] top-[946px] flex flex-col items-center gap-1 opacity-70 cursor-pointer hover:opacity-100 transition-opacity z-10">
-          <span className="text-[var(--text-text-black-primary)] text-[16px] uppercase tracking-[2px] font-body">EXPLORE</span>
-          <ChevronDown className="text-black h-5 w-5" />
+        <div className="relative md:absolute md:left-[714px] md:top-[946px] flex flex-col items-center gap-1 opacity-70 cursor-pointer hover:opacity-100 transition-opacity z-10 mt-16 md:mt-0">
+          <span className="text-[var(--text-text-black-primary)] text-[14px] md:text-[16px] uppercase tracking-[2px] font-body">EXPLORE</span>
+          <ChevronDown className="text-black h-4 w-4 md:h-5 md:w-5" />
         </div>
       </section>
 
       {/* 3. STORIES GRID */}
-      <section className="bg-[#1c1917] py-[90px] px-[102px] flex flex-col items-center">
-        <div className="text-center mb-[94px] space-y-4">
+      <section className="bg-[#1c1917] py-20 md:py-[90px] px-6 md:px-[102px] flex flex-col items-center">
+        <div className="text-center mb-12 md:mb-[94px] space-y-4">
           <h2 className="text-[var(--text-text-light-primary)]">
-            <span className="font-body text-display-xl">a world </span>
-            <span className="font-heading italic font-ultra-light text-display-xl">worth listening </span>
-            <span className="font-body text-display-xl">to</span>
+            <span className="font-body text-[32px] md:text-display-xl">a world </span>
+            <span className="font-heading italic font-ultra-light text-[32px] md:text-display-xl">worth listening </span>
+            <span className="font-body text-[32px] md:text-display-xl">to</span>
           </h2>
-          <p className="font-body text-body-1-5xl text-[var(--text-text-light-primary)] opacity-80">
+          <p className="font-body text-[16px] md:text-body-1-5xl text-[var(--text-text-light-primary)] opacity-80 max-w-[600px]">
             explore a curated selection from the archive, designed to help you listen
           </p>
         </div>
 
         {/* Stories Grid */}
-        <div className="grid grid-cols-3 gap-x-[24px] gap-y-[80px] w-full max-w-[1307px] items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[24px] gap-y-16 md:gap-y-[80px] w-full max-w-[1307px] items-start">
           <StoryCard 
             title="poetry as defiance" 
             subtitle="fehmida riaz" 
@@ -155,29 +155,29 @@ export default function Home() {
           />
         </div>
 
-        <Link href="/" className="mt-20 font-body text-[var(--font-size-body-xl)] text-[var(--text-text-light-secondary)] uppercase tracking-[2px] border-b border-white/20 pb-1 hover:border-white transition-all">
+        <Link href="/" className="mt-16 md:mt-20 font-body text-[14px] md:text-[var(--font-size-body-xl)] text-[var(--text-text-light-secondary)] uppercase tracking-[2px] border-b border-white/20 pb-1 hover:border-white transition-all">
           See all stories
         </Link>
       </section>
 
       {/* 4. CATEGORIES SECTION */}
-      <section className="bg-[#f1e1d0] py-[131px] px-[94px]">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-[100px]">
+      <section className="bg-[#f1e1d0] py-20 md:py-[131px] px-6 md:px-[94px]">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 md:gap-[100px]">
           {/* Left Column */}
-          <div className="w-full lg:max-w-[700px] space-y-[100px]">
-            <div className="flex gap-6 items-start">
-              <div className="w-[2px] h-[80px] bg-[#E65100] mt-1" />
-              <div className="flex flex-col font-body text-body-2xl leading-[1.1] text-[var(--text-text-black-primary)]">
+          <div className="w-full lg:max-w-[700px] space-y-12 md:space-y-[100px]">
+            <div className="flex gap-4 md:gap-6 items-start">
+              <div className="w-[2px] h-[60px] md:h-[80px] bg-[#E65100] mt-1" />
+              <div className="flex flex-col font-body text-[20px] md:text-body-2xl leading-[1.1] text-[var(--text-text-black-primary)]">
                 <span>it was never a singular story.</span>
-                <div className="flex items-baseline gap-2">
+                <div className="flex flex-wrap items-baseline gap-2">
                   <span>find what </span>
-                  <span className="font-heading italic font-ultra-light text-display-md">makes sense</span>
+                  <span className="font-heading italic font-ultra-light text-[32px] md:text-display-md">makes sense</span>
                   <span> to you.</span>
                 </div>
               </div>
             </div>
 
-            <div className="max-w-[580px] font-body text-body-xl leading-[1.4] text-[var(--text-text-black-primary)] space-y-8">
+            <div className="max-w-[580px] font-body text-[16px] md:text-body-xl leading-[1.4] text-[var(--text-text-black-primary)] space-y-6 md:space-y-8">
               <p>Different cities. Different languages. Different ways of being. Hear voices shaped by migration, memory, class, faith, art, and resistance.</p>
               <p>Some will feel familiar. others might surprise you.</p>
               <p>Together, they reflect the kind of Pakistan many of us grew up missing; complex, creative, unfinished.</p>
@@ -195,9 +195,9 @@ export default function Home() {
               { name: "religion", sub: null },
               { name: "politics", sub: null }
             ].map((cat, idx) => (
-              <div key={cat.name} className={`flex flex-col w-full ${idx === 0 ? '' : 'mt-[30px]'}`}>
+              <div key={cat.name} className={`flex flex-col w-full ${idx === 0 ? '' : 'mt-6 md:mt-[30px]'}`}>
                 <div className="flex flex-col group cursor-pointer items-start w-fit">
-                  <span className={`text-display-md transition-all ${cat.italic ? 'font-heading italic' : 'font-body'} text-[var(--text-text-black-primary)]`}>
+                  <span className={`text-[28px] md:text-display-md transition-all ${cat.italic ? 'font-heading italic' : 'font-body'} text-[var(--text-text-black-primary)]`}>
                     {cat.name}
                   </span>
                   
@@ -208,12 +208,12 @@ export default function Home() {
 
                   {cat.sub && (
                     <div className="w-full lg:w-[314px]">
-                      <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 font-body text-body-md text-[var(--text-text-black-primary)]">
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 font-body text-[14px] md:text-body-md text-[var(--text-text-black-primary)]">
                         {cat.sub.map(s => <span key={s} className="hover:text-[#E65100] transition-colors cursor-pointer">{s}</span>)}
                       </div>
                       {/* Active category thick bottom line spanning full width of the column */}
                       {cat.active && (
-                        <div className="w-[314px] h-[3px] bg-[#E65100] mt-4 ml-[-20px] lg:ml-0" />
+                        <div className="w-full lg:w-[314px] h-[3px] bg-[#E65100] mt-4" />
                       )}
                     </div>
                   )}

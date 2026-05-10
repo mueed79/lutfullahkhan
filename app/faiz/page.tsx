@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ChevronUp } from "lucide-react";
 import StickyAudioPlayer from "@/components/media/StickyAudioPlayer";
@@ -16,6 +16,8 @@ export default function FaizPage() {
     trackTitle: 'Chand Roz Aur Meri Jaan',
     isVisible: false
   });
+
+  const [showLetterTranscription, setShowLetterTranscription] = useState(false);
 
   // Section Refs for scroll tracking
   const heroRef = useRef(null);
@@ -66,19 +68,19 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="relative z-20 max-w-[900px] text-center mb-24">
+        <div className="relative z-20 max-w-[900px] text-center mb-12 md:mb-24 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-12"
+            className="space-y-8 md:space-y-12"
           >
-            <h1 className="text-[54px] md:text-[64px] font-sans leading-[1.1] tracking-tight text-[#EDE8DC]">
+            <h1 className="text-[32px] md:text-[64px] font-sans leading-[1.2] md:leading-[1.1] tracking-tight text-[#EDE8DC]">
               &ldquo;Faiz was not my personal friend. 
               <br className="hidden md:block" />
               He was my <span className="text-[#E65100] italic font-heading font-thin">benefactor</span>.&rdquo;
             </h1>
-            <p className="text-body-lg uppercase tracking-[0.4em] opacity-40 font-bold">
+            <p className="text-[12px] md:text-body-lg uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-40 font-bold">
               &mdash; Lutfullah Khan
             </p>
           </motion.div>
@@ -94,7 +96,7 @@ export default function FaizPage() {
       {/* 2. Recording Sessions Section (Karachi) - Full-bleed Portrait Layout */}
       <section ref={s2Ref} className="relative min-h-screen w-full flex flex-col md:flex-row bg-[#1C1917] text-[#EDE8DC]"
       style={{ background: 'linear-gradient(180deg, #232222 0%, #151413 100%)' }}>
-        <div className="w-full md:w-1/2 relative h-screen grayscale">
+        <div className="w-full md:w-1/2 relative h-[50vh] md:h-screen grayscale">
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -110,16 +112,16 @@ export default function FaizPage() {
           </motion.div>
         </div>
         
-        <div className="w-full md:w-1/2 flex flex-col justify-center px-24">
-          <div className="max-w-[480px] space-y-10">
-            <p className="text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Recording Sessions, Karachi 1964 – 1984</p>
-            <div className="relative pl-10">
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-24 py-20 md:py-0">
+          <div className="max-w-[480px] space-y-6 md:space-y-10">
+            <p className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Recording Sessions, Karachi 1964 – 1984</p>
+            <div className="relative pl-6 md:pl-10">
               <div className="absolute left-0 top-2 bottom-2 w-[1px] bg-[#E65100]" />
-              <h2 className="text-[34px] font-heading font-light leading-snug">
+              <h2 className="text-[24px] md:text-[34px] font-heading font-light leading-snug">
                 &ldquo;Once he entered my studio, he lost no time in preliminary conversation – he did not believe in small talk. He knew what he had to recite and I knew what I had to record.&rdquo;
               </h2>
             </div>
-            <p className="text-[16px] opacity-60 leading-relaxed font-light">
+            <p className="text-[14px] md:text-[16px] opacity-60 leading-relaxed font-regular">
               Over twenty years, Faiz visited Lutfullah Khan&apos;s home whenever he passed through Karachi. He would settle at the table, and within seconds, begin reciting into the microphone. Poems from published books, from old magazines, from odd couplets copied into somebody&apos;s diary.
             </p>
             
@@ -127,21 +129,21 @@ export default function FaizPage() {
               <div className="flex gap-1.5 items-center">
                 {[1,2,3].map(i => <div key={i} className={`w-[2px] bg-current ${i===1 ? 'h-3' : i===2 ? 'h-5' : 'h-2'}`} />)}
               </div>
-              <span className="text-[13px] font-bold uppercase tracking-[0.2em]">His voice is playing below.</span>
+              <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-[0.2em]">His voice is playing below.</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* 3. 1911 – Sialkot - Cream Layout Refined */}
-      <section ref={s3Ref} className="relative min-h-screen w-full flex items-center bg-[#F1E1D0] text-[#1C1917] px-24 py-32">
+      <section ref={s3Ref} className="relative min-h-screen w-full flex items-center bg-[#F1E1D0] text-[#1C1917] px-8 md:px-24 py-20 md:py-32">
         <div className="max-w-[1400px] w-full mx-auto relative z-10">
-          <div className="max-w-[600px] space-y-10">
-            <p className="text-[12px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1911 – Sialkot</p>
-            <p className="text-[32px] font-heading font-light leading-[1.3]">
+          <div className="max-w-[600px] space-y-6 md:space-y-10">
+            <p className="text-[10px] md:text-[12px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1911 – Sialkot</p>
+            <p className="text-[24px] md:text-[32px] font-heading font-light leading-[1.4] md:leading-[1.3]">
               Born in Sialkot in 1911, <span className="text-[#E65100] italic">Faiz Ahmad Faiz</span> stands as one of South Asia’s most resonant voices. A poet of resistance and of the people, his vision of Pakistan was inseparable from a broader commitment to justice, humanity, and solidarity across borders.
             </p>
-            <button className="text-[20px] font-heading italic opacity-80 hover:opacity-100 transition-opacity pt-4">know more +</button>
+            <button className="text-[18px] md:text-[20px] font-heading italic opacity-80 hover:opacity-100 transition-opacity pt-4">know more +</button>
           </div>
         </div>
         
@@ -152,18 +154,18 @@ export default function FaizPage() {
       </section>
 
       {/* 4. 1936 – Lahore - Split Layout (Cream) */}
-      <section ref={s4Ref} className="relative min-h-screen w-full flex items-center justify-center bg-[#F1E1D0] text-[#1C1917] px-24 py-32">
-        <div className="grid grid-cols-2 gap-24 items-end">
-          <div className="space-y-12 opacity-30 grayscale pointer-events-none">
-            <p className="text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1911 – Sialkot</p>
-            <p className="text-[36px] font-heading font-light leading-[1.2]">
+      <section ref={s4Ref} className="relative min-h-screen w-full flex items-center justify-center bg-[#F1E1D0] text-[#1C1917] px-8 md:px-24 py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-end">
+          <div className="space-y-6 md:space-y-12 opacity-30 grayscale pointer-events-none hidden md:block">
+            <p className="text-[12px] md:text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1911 – Sialkot</p>
+            <p className="text-[28px] md:text-[36px] font-heading font-light leading-[1.2]">
               Born in Sialkot in 1911, <span className="text-[#E65100] italic">Faiz Ahmad Faiz</span> stands as one of South Asia’s most resonant voices.
             </p>
           </div>
           
-          <div className="space-y-12">
-            <p className="text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1936 – Lahore</p>
-            <p className="text-[36px] md:text-[42px] font-heading font-light leading-[1.2]">
+          <div className="space-y-6 md:space-y-12">
+            <p className="text-[12px] md:text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1936 – Lahore</p>
+            <p className="text-[28px] md:text-[42px] font-heading font-light leading-[1.2]">
               Deeply informed by Marxist ideals, Faiz joined the Progressive Writers’ Movement and spent much of his life confronting oppression, even when it meant prison or exile.
             </p>
           </div>
@@ -176,10 +178,10 @@ export default function FaizPage() {
       </section>
 
       {/* 5. 1951 – Resistance - Dark Layout with Poetry */}
-      <section ref={s5Ref} className="relative min-h-[150vh] w-full flex flex-col items-center pt-32 pb-32 bg-[#1C1917] text-[#EDE8DC] px-24">
-        <div className="max-w-[800px] space-y-12 mb-48">
-          <p className="text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold text-center">1951 – Resistance in confinement</p>
-          <div className="space-y-8 text-[22px] font-light leading-relaxed opacity-80">
+      <section ref={s5Ref} className="relative min-h-screen w-full flex flex-col items-center pt-20 pb-20 bg-[#1C1917] text-[#EDE8DC] px-8 md:px-24">
+        <div className="max-w-[800px] space-y-8 md:space-y-12 mb-20 md:mb-48">
+          <p className="text-[12px] md:text-[14px] uppercase tracking-[0.3em] text-[#E65100] font-bold text-center">1951 – Resistance in confinement</p>
+          <div className="space-y-6 md:space-y-8 text-[18px] md:text-[22px] font-regular leading-relaxed opacity-80">
             <p>
               In 1951, he was arrested in the famous Rawalpindi Conspiracy Case and spent four years in jails across Pakistan, often in solitary confinement. 
             </p>
@@ -189,21 +191,21 @@ export default function FaizPage() {
           </div>
         </div>
 
-        <div className="w-full flex justify-end">
-          <div className="relative flex gap-16 items-start max-w-[1000px]">
-            <div className="space-y-6 text-right">
-              <p className="text-[24px] font-heading leading-tight tracking-tight" style={{ direction: 'rtl' }}>
+        <div className="w-full flex justify-center md:justify-end">
+          <div className="relative flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-start max-w-[1000px]">
+            <div className="space-y-6 text-center md:text-right order-2 md:order-1">
+              <p className="text-[20px] md:text-[24px] font-heading leading-tight tracking-tight" style={{ direction: 'rtl' }}>
                 متاعِ لوح و قلم چھن گئی تو کیا غم ہے<br/>
                 کہ خونِ دل میں ڈبو لی ہیں انگلیاں میں نے<br/>
                 زبان پہ مہر لگی ہے تو کیا
               </p>
-              <div className="space-y-2 opacity-60 text-[16px] leading-relaxed font-light mt-12">
+              <div className="space-y-2 opacity-60 text-[14px] md:text-[16px] leading-relaxed font-regular mt-8 md:mt-12">
                 <p>My pen and tablet, all that I had, taken away from me. But what is there to grieve for?</p>
                 <p>For I have dipped my fingers in my heart’s blood</p>
                 <p>So what if my lips have been sealed shut?</p>
               </div>
             </div>
-            <div className="w-1 bg-[#E65100] h-[240px]" />
+            <div className="w-[1px] md:w-1 bg-[#E65100] h-20 md:h-[240px] order-1 md:order-2" />
           </div>
         </div>
       </section>
@@ -217,7 +219,7 @@ export default function FaizPage() {
             className="space-y-10"
           >
             <h3 className="text-display-md font-heading tracking-tight">1977 &ndash; Beirut</h3>
-            <div className="space-y-8 text-body-xl opacity-70 leading-relaxed font-light">
+            <div className="space-y-8 text-body-xl opacity-70 leading-relaxed font-regular">
               <p>
                 After General Zia&apos;s 1977 coup, he went into self-imposed exile in Beirut, where he edited Lotus, the Afro-Asian Writers&apos; Association journal. 
               </p>
@@ -237,12 +239,12 @@ export default function FaizPage() {
       </section>
 
       {/* 7. Handwritten Note Section - Refined */}
-      <section className="relative min-h-screen w-full py-48 px-24 bg-[#1C1917] text-[#EDE8DC] flex items-center">
-        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
-          <div className="space-y-12">
-            <p className="text-[11px] uppercase tracking-[0.3em] opacity-60 font-bold">RECORDING SESSIONS, KARACHI 1964 – 1984</p>
+      <section className="relative min-h-screen w-full py-20 md:py-48 px-8 md:px-24 bg-[#1C1917] text-[#EDE8DC] flex items-center">
+        <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32 items-center">
+          <div className="space-y-8 md:space-y-12 order-2 md:order-1">
+            <p className="text-[13px] md:text-[13px] uppercase tracking-[0.3em] opacity-90 font-bold">RECORDING SESSIONS, KARACHI 1964 – 1984</p>
             
-            <div className="space-y-8 text-[16px] leading-relaxed opacity-80 font-light max-w-[500px]">
+            <div className="space-y-6 md:space-y-8 text-[20px] md:text-[20px] leading-relaxed opacity-80 font-regular max-w-[500px]">
               <p>
                 Although Faiz had recited many of his poems for Lutfullah Khan, a few remained unrecorded. And so Khan carefully prepared a list of what was still missing.
               </p>
@@ -251,35 +253,77 @@ export default function FaizPage() {
               </p>
             </div>
 
-            <div className="relative pl-10 py-2">
+            <div className="relative pl-6 md:pl-10 py-2">
               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#E65100]" />
-              <div className="space-y-8 max-w-[500px]">
-                <p className="text-[32px] font-heading font-light leading-snug">
+              <div className="space-y-6 md:space-y-8 max-w-[500px]">
+                <p className="text-[24px] md:text-[24px] font-heading font-regular leading-snug">
                   &ldquo;It can be heard in the recording of that particular session ... but he never let that interfere with his contribution to my library.
                 </p>
-                <p className="text-[32px] font-heading font-light leading-snug">
+                <p className="text-[24px] md:text-[24px] font-heading font-regular leading-snug">
                   He always preferred a cup of coffee to sip during the recording. Needless to mention, he smoked – before, during, and after.&rdquo;
                 </p>
               </div>
             </div>
 
-            <button className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] font-bold opacity-60 hover:opacity-100 transition-opacity pt-12">
+            <button className="flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold opacity-60 hover:opacity-100 transition-opacity pt-8 md:pt-12">
               READ LUTFULLAH KHAN’S FULL ACCOUNT <ChevronUp className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="flex flex-col items-start gap-6">
-            <div className="relative w-full aspect-square max-w-[500px] shadow-2xl">
+          <div className="flex flex-col items-center md:items-start gap-6 order-1 md:order-2 w-full">
+            <div 
+              className="relative w-full aspect-[1220/1272] max-w-[400px] md:max-w-[500px] shadow-2xl group cursor-pointer overflow-hidden rounded-sm"
+              onClick={() => setShowLetterTranscription(!showLetterTranscription)}
+            >
+              {/* The Image */}
               <Image 
                 src="/faiz-letter.png" 
                 alt="Handwritten note" 
                 fill 
-                className="object-contain"
+                className={`object-contain transition-all duration-700 ${showLetterTranscription ? 'scale-110 blur-sm opacity-20' : 'opacity-100'}`}
               />
+
+              {/* Transcription Overlay */}
+              <AnimatePresence>
+                {showLetterTranscription && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="absolute inset-0 bg-[#FAF5EF] flex flex-col items-center justify-center p-8 md:p-12 text-[#1C1917]"
+                  >
+                    <div className="space-y-8 text-center" style={{ direction: 'rtl' }}>
+                      <p className="text-[24px] md:text-[24px] font-heading leading-relaxed tracking-tight">
+                        ذکر پھر کیجیے اس گوشہِ تنہائی کا<br/>
+                        جس میں ہر لحظہ بپا رہتی ہے اک محفلِ لطف
+                      </p>
+                      <p className="text-[24px] md:text-[24px] font-heading leading-relaxed tracking-tight">
+                        منزلِ نغمہ گراں، خانہِ شیریں سخناں<br/>
+                        سر بہ سر منبعِ سو لطف ہے، یہ منزلِ لطف
+                      </p>
+                      <p className="text-[24px] md:text-[24px] font-heading leading-relaxed tracking-tight">
+                       فیض احمد فیض
+                      </p>
+                    </div>
+                    <button className="mt-12 text-[10px] uppercase tracking-[0.2em] font-bold opacity-40 hover:opacity-100 transition-opacity">
+                      Click to view original letter
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Hover Hint */}
+              {!showLetterTranscription && (
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="px-4 py-2 bg-white/90 text-black text-[10px] uppercase tracking-[0.2em] font-bold rounded-full">
+                    View Transcription
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="space-y-1">
-              <p className="text-[14px] opacity-80 font-light">Handwritten note from Faiz to Lutfullah Khan</p>
-              <p className="text-[11px] opacity-40 italic">Photo from This Source</p>
+            <div className="space-y-1 text-center md:text-left">
+              <p className="text-[14px] md:text-[14px] opacity-100 font-regular">Handwritten note from Faiz to Lutfullah Khan</p>
+              <p className="text-[13px] opacity-60 italic">Photo from This Source</p>
             </div>
           </div>
         </div>
@@ -293,11 +337,11 @@ export default function FaizPage() {
           transition={{ duration: 2 }}
           className="max-w-[900px] space-y-16 text-center"
         >
-          <p className="text-body-3xl font-heading leading-tight tracking-tight italic opacity-90">
+          <p className="text-[14px] md:text-[24px] font-heading italic opacity-90">
             &ldquo;He promised that on his next visit, which was planned in the third week of the same month, he would oblige me. As usual, I did not insist... Little did I know that not all promises can be kept.&rdquo;
           </p>
           <div className="w-24 h-0.5 bg-[#E65100] mx-auto opacity-50" />
-          <p className="text-body-xl uppercase tracking-[0.4em] opacity-30 font-bold">
+          <p className="text-[20px] md:text-[18px] uppercase tracking-[0.3em] opacity-60 font-bold">
             Faiz died in Lahore on November 20, 1984.
           </p>
         </motion.div>
@@ -312,7 +356,7 @@ export default function FaizPage() {
           <motion.h2 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-hero font-heading leading-none tracking-tighter"
+            className="text-[14px] md:text-[18px] font-heading leading-none"
           >
             Bol
           </motion.h2>
