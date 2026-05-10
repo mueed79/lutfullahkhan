@@ -50,7 +50,7 @@ export default function FaizPage() {
       <section ref={heroRef} className="relative h-[140vh] w-full flex flex-col items-center justify-center px-6 overflow-hidden" style={{ background: 'linear-gradient(180deg, #141312 0%, #232222 100%)' }}>
         
         {/* fahmida-spool image - positioned lower as per feedback */}
-        <div className="absolute right-[-10%] bottom-[-5%] w-[680px] h-[680px] mix-blend-color-dodge opacity-90 pointer-events-none z-[10]">
+        <div className="absolute right-[-5%] bottom-[10%] w-[480px] h-[480px] mix-blend-color-dodge opacity-90 pointer-events-none z-[10]">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
