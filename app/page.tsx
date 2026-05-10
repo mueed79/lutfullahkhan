@@ -155,7 +155,7 @@ export default function Home() {
           />
         </div>
 
-        <Link href="/works" className="mt-20 font-body text-[var(--font-size-body-xl)] text-[var(--text-text-light-secondary)] uppercase tracking-[2px] border-b border-white/20 pb-1 hover:border-white transition-all">
+        <Link href="/" className="mt-20 font-body text-[var(--font-size-body-xl)] text-[var(--text-text-light-secondary)] uppercase tracking-[2px] border-b border-white/20 pb-1 hover:border-white transition-all">
           See all stories
         </Link>
       </section>
