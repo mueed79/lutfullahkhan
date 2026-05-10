@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-neue-montreal), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-pp-editorial-new), serif;
+
+  /* Colors */
+  --color-brand-primary: #E65100;
+  --color-warm-bg: #F1E1D0;
+  
+  /* Font Sizes - Standard v4 naming */
+  --font-size-hero: 56px;
+  --font-size-display-xl: 56px;
+  --font-size-display-lg: 48px;
+  --font-size-display-md: 36px;
+  --font-size-display-sm: 30px;
+  --font-size-body-3xl: 56px;
+  --font-size-body-2xl: 36px;
+  --font-size-body-1-5xl: 28px;
+  --font-size-body-xl: 20px;
+  --font-size-body-lg: 18px;
+  --font-size-body-md: 16px;
+  --font-size-body-sm: 14px;
+
+  /* Line Heights */
+  --line-height-hero: 1.1;
+  --line-height-display-xl: 1.1;
+  --line-height-body-2xl: 1.1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Colors */
+    --colors-warm-100: #F1E1D0;
+    --colors-gray-900: #1C1816;
+    
+    /* Semantic */
+    --background-bg-light-primary: var(--colors-warm-100);
+    --text-text-black-primary: var(--colors-gray-900);
+    --text-text-light-primary: #FAF5EF;
+    --text-text-light-secondary: #F6EBE0;
+    --text-text-light-transparent: #FFFFFF7F;
+    --text-text-brand-primary: #E65100;
+  }
+
+  body {
+    background-color: var(--background-bg-light-primary);
+    color: var(--text-text-black-primary);
+    font-family: var(--font-neue-montreal), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-pp-editorial-new), serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Hardcoded utility overrides for critical font sizes to bypass any theme mapping issues */
+  .text-body-2xl { font-size: 36px !important; line-height: 1.1 !important; }
+  .text-display-xl { font-size: 56px !important; line-height: 1.1 !important; }
+  .text-display-md { font-size: 36px !important; line-height: 1.1 !important; }
+  .text-body-1-5xl { font-size: 28px !important; line-height: 1.2 !important; }
+  .text-body-xl { font-size: 20px !important; line-height: 1.2 !important; }
 }
