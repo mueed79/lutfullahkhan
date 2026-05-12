@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef } from "react";
 import { VolumeX, Volume2 } from "lucide-react";
 import Logo from "@/components/ui/Logo";
@@ -25,17 +26,18 @@ export default function Footer() {
       <audio ref={audioRef} src="/audio/mehdi-hassan.mp3" loop />
       {/* 1. Painting Background */}
       <div className="absolute inset-0">
-        <img 
-          src="/footer.png" 
-          alt="Salman Toor Painting" 
-          className="w-full h-full object-cover opacity-65"
+        <Image
+          src="/footer.png"
+          alt="Salman Toor Painting"
+          fill
+          className="object-cover opacity-65"
         />
         {/* Video Overlay */}
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           className="absolute inset-0 w-full h-full object-cover mix-blend-screen opacity-40 pointer-events-none"
         >
           <source src="/stars.mp4" type="video/mp4" />
@@ -53,12 +55,12 @@ export default function Footer() {
             </h2>
             <p className="text-[28px] md:text-[34px] font-sans font-regular tracking-tight text-white mt-1">so hold on.</p>
           </div>
-          
+
           {/* Sub Narrative - Offset to right and bottom as per Figma (7:607), Stacked on Mobile */}
           <div className="relative md:absolute md:left-[300px] md:top-[160px] flex flex-col items-center md:items-start gap-1 pointer-events-auto">
             <p className="text-[18px] md:text-[28px] text-white font-regular whitespace-nowrap">help us preserve a precious moment.</p>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="text-[18px] md:text-[28px] text-white underline decoration-white/30 hover:decoration-white transition-all underline-offset-4"
             >
               get involved.
@@ -75,9 +77,9 @@ export default function Footer() {
               Muhabbat Karnay Walay
             </span>
             {/* Play/Mute Control next to title */}
-            <button 
+            <button
               onClick={togglePlayback}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-brand-primary flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-[var(--text-text-brand-primary)] flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
             >
               {isPlaying ? <Volume2 size={16} className="text-white" /> : <VolumeX size={16} className="text-white/40" />}
             </button>
@@ -89,7 +91,7 @@ export default function Footer() {
       </div>
 
       {/* 4. Attribution (Bottom Right, Hidden or Repositioned on Mobile) */}
-      <div className="absolute right-6 md:right-[80px] bottom-[200px] md:bottom-[200px] text-white text-[9px] md:text-[14px] uppercase tracking-[0.2em] font-regular text-center w-full md:w-auto">
+      <div className="absolute right-6 md:right-[80px] bottom-[200px] text-white text-[9px] md:text-[14px] uppercase tracking-[0.2em] font-regular text-center w-full md:w-auto">
         Oil Painting, Salman Toor
       </div>
 
@@ -98,8 +100,8 @@ export default function Footer() {
         <p className="text-[12px] md:text-[16px] text-white font-regular tracking-wider text-center md:text-left opacity-40">
           © 2026 Lutfullah Khan Sound Archive. All rights reserved.
         </p>
-        <div className="grayscale brightness-1000 scale-[0.7] md:scale-[0.8] origin-center md:origin-right">
-           <Logo light={false} />
+        <div className="scale-[0.7] md:scale-[0.8] origin-center md:origin-right">
+          <Logo light={true} />
         </div>
       </div>
     </footer>

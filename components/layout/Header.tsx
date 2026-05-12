@@ -6,17 +6,7 @@ import { usePathname } from "next/navigation";
 import { Search, ChevronDown } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { useState } from "react";
-
-const storyItems = [
-  "Faiz Ahmed Faiz",
-  "Josh Malihabadi",
-  "Fahmida Riaz",
-  "Hafeez Jalandhari",
-  "Atiya Begum Fyzee",
-  "Begum Ra'ana Liaquat Ali Khan",
-  "Roshan Ara Begum",
-  "Akhtar ul-Iman",
-];
+import { stories } from "@/lib/data";
 
 export default function Header() {
   const pathname = usePathname();
@@ -80,13 +70,13 @@ export default function Header() {
                   className="absolute top-full right-[-20px] md:right-0 mt-4 w-[calc(100vw-2rem)] md:w-[600px] bg-[#1C1917] border border-white/20 rounded-sm p-6 md:p-8 shadow-2xl"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-                    {storyItems.map((item) => (
+                    {stories.map((story) => (
                       <Link
-                        key={item}
-                        href={item === "Faiz Ahmed Faiz" ? "/faiz" : "#"}
+                        key={story.name}
+                        href={story.slug ? `/${story.slug}` : "#"}
                         className="text-[14px] text-white hover:text-[var(--text-text-brand-primary)] transition-all font-medium hover:translate-x-1 inline-block py-1 md:py-0"
                       >
-                        {item}
+                        {story.name}
                       </Link>
                     ))}
                   </div>
