@@ -1,15 +1,39 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS — your single source of truth for visual style
+   Change values here and they update everywhere on the site.
+   ============================================================ */
+
 @theme {
+  /* ── FONTS ─────────────────────────────────────────────────
+     font-sans  → body text  (Neue Montreal)
+     font-heading → titles, pull quotes (PP Editorial New)     */
   --font-sans: var(--font-neue-montreal), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-pp-editorial-new), serif;
   --font-mono: ui-monospace, monospace;
 
-  /* Font weights */
+  /* ── FONT WEIGHTS ──────────────────────────────────────────
+     Usage: className="font-ultra-light"  → thin/elegant look
+            className="font-regular"      → normal weight      */
   --font-weight-ultra-light: 100;
   --font-weight-regular: 400;
 
-  /* Font sizes */
+  /* ── FONT SIZES ────────────────────────────────────────────
+     "display-*" → big headline sizes (hero, section titles)
+     "body-*"    → paragraph and UI text sizes
+
+     Usage: className="text-display-xl"   → 56px
+            className="text-display-lg"   → 48px
+            className="text-display-md"   → 36px  ← common pull-quote size
+            className="text-display-sm"   → 30px
+            className="text-display-xs"   → 24px  ← card titles
+            className="text-body-2xl"     → 36px
+            className="text-body-1-5xl"   → 28px
+            className="text-body-xl"      → 20px  ← large body text
+            className="text-body-lg"      → 18px
+            className="text-body-md"      → 16px  ← default body
+            className="text-body-sm"      → 14px  ← captions, labels    */
   --font-size-hero: 56px;
   --font-size-display-xl: 56px;
   --font-size-display-lg: 48px;
@@ -27,43 +51,61 @@
 
 @layer base {
   :root {
-    /* Color primitives */
-    --colors-warm-100: #F1E1D0;
-    --colors-gray-900: #1C1816;
-    --colors-gray-50: #FAFAF9;
+    /* ── COLOR PRIMITIVES ────────────────────────────────────
+       Raw palette — don't use these directly in components,
+       use the semantic tokens below.                          */
+    --colors-warm-100: #F1E1D0;   /* warm off-white background */
+    --colors-gray-900: #1C1816;   /* near-black text / dark bg */
+    --colors-gray-50:  #FAFAF9;
     --colors-gray-100: #F5F5F4;
     --colors-gray-200: #E7E5E4;
     --colors-gray-300: #D6D3D1;
     --colors-gray-400: #A8A29E;
-    --colors-brand-50: #FFF3EE;
+    --colors-brand-50:  #FFF3EE;  /* very light orange tint */
     --colors-brand-100: #FFE4D0;
     --colors-brand-200: #FFCBA8;
 
-    /* Semantic backgrounds */
+    /* ── BACKGROUNDS ─────────────────────────────────────────
+       --background-bg-light-primary  → warm cream page background
+       --background-bg-white          → pure white sections
+       --background-bg-brand-solid    → solid orange (buttons)   */
     --background-bg-light-primary: var(--colors-warm-100);
     --background-bg-white: #FFFFFF;
     --background-bg-brand-solid: #E65100;
 
-    /* Semantic text */
-    --text-text-black-primary: var(--colors-gray-900);
-    --text-text-black-secondary: #44403C;
-    --text-text-black-seconday: #44403C;
-    --text-text-black-tertiary: #78716C;
+    /* ── TEXT COLORS ─────────────────────────────────────────
+       -primary    → main headings / body (near-black)
+       -secondary  → subtext, descriptions (dark grey)
+       -tertiary   → meta labels (medium grey)
+       -quaternary → faint labels (light grey)
+
+       -light-*    → text on dark backgrounds
+       -brand-*    → orange accent text                         */
+    --text-text-black-primary:    var(--colors-gray-900);
+    --text-text-black-secondary:  #44403C;
+    --text-text-black-seconday:   #44403C;  /* typo alias kept for compat */
+    --text-text-black-tertiary:   #78716C;
     --text-text-black-quaternary: #A8A29E;
-    --text-text-light-primary: #FAF5EF;
-    --text-text-light-secondary: #F6EBE0;
+    --text-text-light-primary:    #FAF5EF;
+    --text-text-light-secondary:  #F6EBE0;
     --text-text-light-transparent: #FFFFFF7F;
-    --text-text-brand-primary: #E65100;
-    --text-text-brand-secondary: #F97316;
+    --text-text-brand-primary:    #E65100;  /* ← change this to update brand orange everywhere */
+    --text-text-brand-secondary:  #F97316;
 
-    /* Borders */
-    --border-border-primary: #E7E5E4;
+    /* ── BORDERS ─────────────────────────────────────────────
+       -primary   → visible dividers
+       -secondary → subtle inner borders
+       -tertiary  → very faint card edges                       */
+    --border-border-primary:   #E7E5E4;
     --border-border-secondary: #F0EDEC;
-    --border-border-tertiary: #FAF5F2;
+    --border-border-tertiary:  #FAF5F2;
 
-    /* Radius */
-    --radius-md: 8px;
-    --radius-xl: 12px;
+    /* ── BORDER RADIUS ───────────────────────────────────────
+       Usage: className="rounded-[var(--radius-md)]"  → 8px
+              className="rounded-[var(--radius-xl)]"  → 12px
+              className="rounded-[var(--radius-2xl)]" → 16px   */
+    --radius-md:  8px;
+    --radius-xl:  12px;
     --radius-2xl: 16px;
   }
 
@@ -80,8 +122,11 @@
   }
 }
 
+/* ── FONT SIZE UTILITY FALLBACKS ──────────────────────────────
+   These mirror the @theme values above. If a text-* class ever
+   stops working, it's because the @theme token wasn't picked up
+   — these kick in as the safety net.                           */
 @layer utilities {
-  /* Explicit font-size utilities as fallback in case @theme tokens aren't picked up */
   .text-display-xl  { font-size: 56px; line-height: 1.1; }
   .text-display-lg  { font-size: 48px; line-height: 1.1; }
   .text-display-md  { font-size: 36px; line-height: 1.1; }
