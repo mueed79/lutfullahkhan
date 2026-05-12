@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, VolumeX } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 
 export default function Home() {
@@ -13,10 +14,12 @@ export default function Home() {
       <section className="relative h-screen md:h-[1200px] w-full bg-[#292524] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-80">
-          <img 
-            src="/hero-karachi.jpg" 
-            alt="Karachi Street Scene" 
-            className="w-full h-full object-cover"
+          <Image
+            src="/hero-karachi.jpg"
+            alt="Karachi Street Scene"
+            fill
+            className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
@@ -65,7 +68,13 @@ export default function Home() {
 
         {/* Floating Waveform Image */}
         <div className="relative md:absolute md:left-[19px] md:top-[216px] w-full md:w-[677px] h-auto md:h-[395px] z-10 mt-20 md:mt-0">
-          <img src="/waveform.png" alt="Waveform" className="w-full h-full object-contain md:object-cover" />
+          <Image
+            src="/waveform.png"
+            alt="Waveform"
+            width={677}
+            height={395}
+            className="w-full h-full object-contain md:object-cover"
+          />
         </div>
 
         {/* Vertical Line & Quote */}
@@ -228,14 +237,23 @@ export default function Home() {
   );
 }
 
-function StoryCard({ title, subtitle, img, height, italicSubtitle = false }: any) {
+interface StoryCardProps {
+  title: string;
+  subtitle: string;
+  img: string;
+  height: string;
+  italicSubtitle?: boolean;
+}
+
+function StoryCard({ title, subtitle, img, height, italicSubtitle = false }: StoryCardProps) {
   return (
     <div className="flex flex-col gap-6 group cursor-pointer w-full">
-      <div className={`${height} overflow-hidden bg-[#292524]`}>
-        <img 
-          src={img} 
-          alt={title} 
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+      <div className={`${height} overflow-hidden bg-[#292524] relative`}>
+        <Image
+          src={img}
+          alt={title}
+          fill
+          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-col gap-1">

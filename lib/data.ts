@@ -15,13 +15,33 @@ export interface Collection {
   slug: string;
   title: string;
   description: string;
+  count?: string;
+  coverImage?: string;
   items: WorkItem[];
 }
+
+export interface Story {
+  name: string;
+  slug: string | null;
+}
+
+export const stories: Story[] = [
+  { name: "Faiz Ahmed Faiz", slug: "faiz" },
+  { name: "Josh Malihabadi", slug: null },
+  { name: "Fahmida Riaz", slug: null },
+  { name: "Hafeez Jalandhari", slug: null },
+  { name: "Atiya Begum Fyzee", slug: null },
+  { name: "Begum Ra'ana Liaquat Ali Khan", slug: null },
+  { name: "Roshan Ara Begum", slug: null },
+  { name: "Akhtar ul-Iman", slug: null },
+];
 
 export const collectionsData: Record<string, Collection> = {
   "classical-music": {
     slug: "classical-music",
-    title: "Classical Music Archive",
+    title: "Classical Music",
+    count: "450+ Recordings",
+    coverImage: "/collections/music.jpg",
     description: "A comprehensive collection of classical vocal and instrumental recordings, curated by Lutfullah Khan over five decades.",
     items: [
       {
@@ -44,9 +64,19 @@ export const collectionsData: Record<string, Collection> = {
       }
     ]
   },
+  "literary-discussions": {
+    slug: "literary-discussions",
+    title: "Literary Discussions",
+    count: "120+ Sessions",
+    coverImage: "/collections/literature.jpg",
+    description: "Conversations with legendary Urdu poets and writers, including Faiz Ahmad Faiz.",
+    items: []
+  },
   "historical-interviews": {
     slug: "historical-interviews",
     title: "Historical Interviews",
+    count: "85 Interviews",
+    coverImage: "/collections/interviews.jpg",
     description: "Oral history recordings with key figures of the partition era and post-independence Pakistan.",
     items: [
       {
@@ -60,5 +90,23 @@ export const collectionsData: Record<string, Collection> = {
         metadata: { "Interviewer": "Lutfullah Khan", "Subject": "Scholar Y" }
       }
     ]
+  },
+  "photographic-archive": {
+    slug: "photographic-archive",
+    title: "Photographs",
+    count: "2,000+ Items",
+    coverImage: "/collections/photos.jpg",
+    description: "A visual record of cultural life in Lahore and Karachi over five decades.",
+    items: []
+  },
+  "manuscripts": {
+    slug: "manuscripts",
+    title: "Manuscripts",
+    count: "300+ Documents",
+    coverImage: "/collections/manuscripts.jpg",
+    description: "Handwritten notes, letters, and rare first editions from the archive.",
+    items: []
   }
 };
+
+export const collections = Object.values(collectionsData);

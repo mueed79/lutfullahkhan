@@ -5,8 +5,9 @@ import AudioPlayer from "@/components/media/AudioPlayer";
 import { ArrowLeft, Share2, Download } from "lucide-react";
 import Link from "next/link";
 
-export default async function WorkDetail({ params }: { params: { slug: string } }) {
-  const collection = collectionsData[params.slug];
+export default async function WorkDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const collection = collectionsData[slug];
 
   if (!collection) {
     notFound();
@@ -26,7 +27,7 @@ export default async function WorkDetail({ params }: { params: { slug: string } 
             <div className="max-w-3xl">
               <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-text-brand-primary)]">Collection</span>
               <h1 className="mt-4 font-heading text-display-lg text-[var(--text-text-black-primary)]">{collection.title}</h1>
-              <p className="mt-6 text-body-lg text-[var(--text-text-black-seconday)] leading-relaxed">
+              <p className="mt-6 text-body-lg text-[var(--text-text-black-secondary)] leading-relaxed">
                 {collection.description}
               </p>
             </div>
@@ -66,7 +67,7 @@ export default async function WorkDetail({ params }: { params: { slug: string } 
                   <h3 className="mt-4 font-heading text-display-xs text-[var(--text-text-black-primary)]">
                     {item.title}
                   </h3>
-                  <p className="mt-4 text-body-sm text-[var(--text-text-black-seconday)] leading-relaxed">
+                  <p className="mt-4 text-body-sm text-[var(--text-text-black-secondary)] leading-relaxed">
                     {item.description}
                   </p>
                   

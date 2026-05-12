@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, ChevronUp, Music2 } from 'lucide-react';
 
@@ -21,7 +21,14 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [currentTime, setCurrentTime] = useState("0:00");
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
 
   const tracks = ['tere honton', 'chand roz', 'bol'];
   
@@ -53,7 +60,12 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className={`fixed bottom-0 left-0 right-0 h-[70px] md:h-[80px] ${finalBgColor} ${finalTextColor} z-50 flex items-center px-4 md:px-12 transition-colors duration-700 ease-in-out border-t border-white/10`}
           >
-            <audio ref={audioRef} src={src} onEnded={() => setIsPlaying(false)} />
+            <audio
+              ref={audioRef}
+              src={src}
+              onEnded={() => setIsPlaying(false)}
+              onTimeUpdate={(e) => setCurrentTime(formatTime((e.target as HTMLAudioElement).currentTime))}
+            />
 
             {/* Left: Track List (Hidden on Mobile) */}
             <div className="hidden md:flex items-center gap-6 w-1/4">
@@ -123,7 +135,7 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
             <div className="w-auto md:w-1/4 flex items-center justify-end gap-3 md:gap-6">
               <div className="text-right">
                 <p className="text-[14px] md:text-[18px] font-heading italic font-light leading-none whitespace-nowrap">{trackTitle}</p>
-                <p className="hidden md:block text-[11px] opacity-60 mt-2 font-mono">0:05</p>
+                <p className="hidden md:block text-[11px] opacity-60 mt-2 font-mono">{currentTime}</p>
               </div>
               <button 
                 onClick={() => setIsMinimized(true)}

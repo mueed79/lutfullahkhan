@@ -3,17 +3,19 @@
 @theme {
   --font-sans: var(--font-neue-montreal), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-pp-editorial-new), serif;
+  --font-mono: ui-monospace, monospace;
 
-  /* Colors */
-  --color-brand-primary: #E65100;
-  --color-warm-bg: #F1E1D0;
-  
-  /* Font Sizes - Standard v4 naming */
+  /* Font weights */
+  --font-weight-ultra-light: 100;
+  --font-weight-regular: 400;
+
+  /* Font sizes */
   --font-size-hero: 56px;
   --font-size-display-xl: 56px;
   --font-size-display-lg: 48px;
   --font-size-display-md: 36px;
   --font-size-display-sm: 30px;
+  --font-size-display-xs: 24px;
   --font-size-body-3xl: 56px;
   --font-size-body-2xl: 36px;
   --font-size-body-1-5xl: 28px;
@@ -21,26 +23,48 @@
   --font-size-body-lg: 18px;
   --font-size-body-md: 16px;
   --font-size-body-sm: 14px;
-
-  /* Line Heights */
-  --line-height-hero: 1.1;
-  --line-height-display-xl: 1.1;
-  --line-height-body-2xl: 1.1;
 }
 
 @layer base {
   :root {
-    /* Colors */
+    /* Color primitives */
     --colors-warm-100: #F1E1D0;
     --colors-gray-900: #1C1816;
-    
-    /* Semantic */
+    --colors-gray-50: #FAFAF9;
+    --colors-gray-100: #F5F5F4;
+    --colors-gray-200: #E7E5E4;
+    --colors-gray-300: #D6D3D1;
+    --colors-gray-400: #A8A29E;
+    --colors-brand-50: #FFF3EE;
+    --colors-brand-100: #FFE4D0;
+    --colors-brand-200: #FFCBA8;
+
+    /* Semantic backgrounds */
     --background-bg-light-primary: var(--colors-warm-100);
+    --background-bg-white: #FFFFFF;
+    --background-bg-brand-solid: #E65100;
+
+    /* Semantic text */
     --text-text-black-primary: var(--colors-gray-900);
+    --text-text-black-secondary: #44403C;
+    --text-text-black-seconday: #44403C;
+    --text-text-black-tertiary: #78716C;
+    --text-text-black-quaternary: #A8A29E;
     --text-text-light-primary: #FAF5EF;
     --text-text-light-secondary: #F6EBE0;
     --text-text-light-transparent: #FFFFFF7F;
     --text-text-brand-primary: #E65100;
+    --text-text-brand-secondary: #F97316;
+
+    /* Borders */
+    --border-border-primary: #E7E5E4;
+    --border-border-secondary: #F0EDEC;
+    --border-border-tertiary: #FAF5F2;
+
+    /* Radius */
+    --radius-md: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
   }
 
   body {
@@ -57,10 +81,16 @@
 }
 
 @layer utilities {
-  /* Hardcoded utility overrides for critical font sizes to bypass any theme mapping issues */
-  .text-body-2xl { font-size: 36px !important; line-height: 1.1 !important; }
-  .text-display-xl { font-size: 56px !important; line-height: 1.1 !important; }
-  .text-display-md { font-size: 36px !important; line-height: 1.1 !important; }
-  .text-body-1-5xl { font-size: 28px !important; line-height: 1.2 !important; }
-  .text-body-xl { font-size: 20px !important; line-height: 1.2 !important; }
+  /* Explicit font-size utilities as fallback in case @theme tokens aren't picked up */
+  .text-display-xl  { font-size: 56px; line-height: 1.1; }
+  .text-display-lg  { font-size: 48px; line-height: 1.1; }
+  .text-display-md  { font-size: 36px; line-height: 1.1; }
+  .text-display-sm  { font-size: 30px; line-height: 1.1; }
+  .text-display-xs  { font-size: 24px; line-height: 1.1; }
+  .text-body-2xl    { font-size: 36px; line-height: 1.1; }
+  .text-body-1-5xl  { font-size: 28px; line-height: 1.2; }
+  .text-body-xl     { font-size: 20px; line-height: 1.2; }
+  .text-body-lg     { font-size: 18px; line-height: 1.4; }
+  .text-body-md     { font-size: 16px; line-height: 1.5; }
+  .text-body-sm     { font-size: 14px; line-height: 1.5; }
 }

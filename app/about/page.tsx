@@ -14,7 +14,7 @@ export default function About() {
             className="max-w-4xl"
           >
             <h1 className="font-heading text-display-xl text-[var(--text-text-black-primary)]">The Curator of Sound</h1>
-            <p className="mt-8 text-body-xl text-[var(--text-text-black-seconday)] leading-relaxed italic">
+            <p className="mt-8 text-body-xl text-[var(--text-text-black-secondary)] leading-relaxed italic">
               "My life has been a search for the echoes of our past. I didn't just collect recordings; I collected the soul of a generation."
             </p>
           </motion.div>
@@ -25,17 +25,17 @@ export default function About() {
       <section className="py-24 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-7 space-y-12">
-            <div className="prose prose-neutral max-w-none">
-              <h2 className="font-heading text-display-xs text-[var(--text-text-black-primary)] mb-6">A Life Dedicated to Preservation</h2>
-              <p className="text-body-md text-[var(--text-text-black-seconday)] leading-relaxed mb-6">
+            <div className="space-y-6">
+              <h2 className="font-heading text-display-xs text-[var(--text-text-black-primary)]">A Life Dedicated to Preservation</h2>
+              <p className="text-body-md text-[var(--text-text-black-secondary)] leading-relaxed">
                 Lutfullah Khan (1916–2012) was a Pakistani author, collector, and archivist who dedicated over sixty years of his life to documenting the cultural and intellectual landscape of South Asia. Born in Madras, he eventually settled in Karachi, where he began his monumental task of recording the voices of the era.
               </p>
-              <p className="text-body-md text-[var(--text-text-black-seconday)] leading-relaxed mb-6">
+              <p className="text-body-md text-[var(--text-text-black-secondary)] leading-relaxed">
                 His collection, now housed at the Lahore University of Management Sciences (LUMS), consists of thousands of hours of rare audio recordings, including classical music, literary sessions, and interviews with political and cultural icons.
               </p>
-              
-              <h3 className="font-heading text-body-xl text-[var(--text-text-black-primary)] mt-12 mb-6">The LUMS Archive</h3>
-              <p className="text-body-md text-[var(--text-text-black-seconday)] leading-relaxed">
+
+              <h3 className="font-heading text-body-xl text-[var(--text-text-black-primary)] pt-6">The LUMS Archive</h3>
+              <p className="text-body-md text-[var(--text-text-black-secondary)] leading-relaxed">
                 In partnership with the Khan family, LUMS has undertaken the digital preservation of this archive. Our mission is to make this vast cultural treasure accessible to scholars, students, and the public, ensuring that the voices Lutfullah Khan captured continue to resonate for generations to come.
               </p>
             </div>
