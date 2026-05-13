@@ -147,10 +147,10 @@ export default function Home() {
 
         {/* Story cards — height prop controls image tall-ness per card */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[24px] gap-y-16 md:gap-y-[80px] w-full max-w-[1307px] items-start">
-          <StoryCard title="poetry as defiance"                   subtitle="fehmida riaz"   img="/poetry.jpg"      height="h-[265px]" />
+          <StoryCard title="poetry as defiance"                   subtitle="fehmida riaz"   img="/poetry.jpg"      height="h-[265px]" href="/fehmida" />
           <StoryCard title="sacred forms, modern anguish"         subtitle="sadequain"       img="/sadequain.jpg"   height="h-[323px]" />
           <StoryCard title="the trouble with telling the truth"   subtitle="ismat chughtai" img="/the-trouble.jpg" height="h-[429px]" />
-          <StoryCard title="writing love letters under surveillance" subtitle="faiz ahmed faiz" img="/faiz.jpg"    height="h-[336px]" />
+          <StoryCard title="writing love letters under surveillance" subtitle="faiz ahmed faiz" img="/faiz.jpg"    height="h-[336px]" href="/faiz" />
           <StoryCard title="a new political imagination"          subtitle="collection"      img="/quaid.jpg"      height="h-[440px]" italicSubtitle />
           <StoryCard title="radio, before algorithms"             subtitle="collection"      img="/radio.jpg"      height="h-[320px]" italicSubtitle />
         </div>
@@ -246,11 +246,12 @@ interface StoryCardProps {
   img: string;
   height: string;       /* e.g. "h-[265px]" — change to resize the image area */
   italicSubtitle?: boolean;
+  href?: string;
 }
 
-function StoryCard({ title, subtitle, img, height, italicSubtitle = false }: StoryCardProps) {
-  return (
-    <div className="flex flex-col gap-6 group cursor-pointer w-full"> {/* ← gap-6: space between image and text */}
+function StoryCard({ title, subtitle, img, height, italicSubtitle = false, href }: StoryCardProps) {
+  const inner = (
+    <>
       <div className={`${height} overflow-hidden bg-[#292524] relative`}>
         <Image
           src={img}
@@ -267,6 +268,20 @@ function StoryCard({ title, subtitle, img, height, italicSubtitle = false }: Sto
           {subtitle}
         </span>
       </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className="flex flex-col gap-6 group cursor-pointer w-full">
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6 group cursor-pointer w-full">
+      {inner}
     </div>
   );
 }

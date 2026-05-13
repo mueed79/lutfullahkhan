@@ -2,21 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause } from "lucide-react";
 import Image from "next/image";
-import StickyAudioPlayer from "@/components/media/StickyAudioPlayer";
+import StickyAudioPlayer, { type StickyAudioPlayerHandle } from "@/components/media/StickyAudioPlayer";
 import RelatedStories from "@/components/layout/RelatedStories";
 
-// Drop audio files into /public/audio/ with these exact filenames:
-//   fehmida-s1.mp3  →  kab se dil
-//   fehmida-s2.mp3  →  badan dareeda
-//   fehmida-s3.mp3  →  sheher
-//   fehmida-s4.mp3  →  haath
+// Audio track list — user will finalise audio file assignments later.
+// Player shows: kab se dil | paish lafz (active on section 3) | badan dareeda
 const TRACKS = [
-  { src: '/audio/fehmida-s1.mp3', title: 'Kab Se Dil',     name: 'kab se dil' },
-  { src: '/audio/fehmida-s2.mp3', title: 'Badan Dareeda',  name: 'badan dareeda' },
-  { src: '/audio/fehmida-s3.mp3', title: 'Sheher',         name: 'sheher' },
-  { src: '/audio/fehmida-s4.mp3', title: 'Haath',          name: 'haath' },
+  { src: '/audio/fehmida-s2.mp3', title: 'Paish Lafz',    name: 'Paish Lafz' },
+  { src: '/audio/fehmida-s3.mp3', title: 'Shehar Walo',    name: 'Shehar Walo' },
+  { src: '/audio/fehmida-s4.mp3', title: 'Badan Dareeda', name: 'badan dareeda' },
 ];
 
 /* Timestamped Urdu transcript — t is audio.currentTime in seconds */
@@ -98,10 +94,12 @@ function SineWave({ isPlaying }: { isPlaying: boolean }) {
 
 export default function FehmidaPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<StickyAudioPlayerHandle>(null);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
-  const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
+  const [selectedTrackIndex, setSelectedTrackIndex] = useState(-1);
   const [isUserSelected, setIsUserSelected] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
+  const [isPlayerPlaying, setIsPlayerPlaying] = useState(false);
 
   /* ── Hero sequence state ────────────────────────────────────────── */
   const [heroPhase, setHeroPhase] = useState<HeroPhase>('transcript');
@@ -110,12 +108,30 @@ export default function FehmidaPage() {
   const heroAudioRef = useRef<HTMLAudioElement>(null);
 
   const playerVisible = activeSectionIndex >= 1;
-  const currentTrack = TRACKS[selectedTrackIndex] || TRACKS[0];
+  const currentTrack = TRACKS[selectedTrackIndex] ?? TRACKS[0];
+  // Keep src empty until a real section is reached so StickyAudioPlayer's
+  // [src] effect fires with the audio element already mounted on first arrival.
+  const playerSrc = selectedTrackIndex >= 0 ? currentTrack.src : '';
 
   const handleTrackSelect = (index: number) => {
     setSelectedTrackIndex(index);
     setIsUserSelected(true);
   };
+  // Section 3's track is TRACKS[1] (paish lafz)
+  const SECTION3_TRACK = 1;
+  const isSection3TrackPlaying = isPlayerPlaying && selectedTrackIndex === SECTION3_TRACK;
+
+  const handleInlinePlay = () => {
+    if (isSection3TrackPlaying) {
+      playerRef.current?.pause();
+    } else {
+      setSelectedTrackIndex(SECTION3_TRACK);
+      setIsUserSelected(true);
+      // Small delay so the src effect can fire before we call play
+      setTimeout(() => playerRef.current?.play(), 80);
+    }
+  };
+
   const handleTrackEnded = () => {
     if (isPinned) return;
     if (selectedTrackIndex < TRACKS.length - 1) {
@@ -127,7 +143,7 @@ export default function FehmidaPage() {
   };
 
   useEffect(() => {
-    if (activeSectionIndex >= 1 && activeSectionIndex <= 4 && !isPinned && !isUserSelected) {
+    if (activeSectionIndex >= 1 && activeSectionIndex <= 2 && !isPinned && !isUserSelected) {
       setSelectedTrackIndex(Math.min(activeSectionIndex - 1, TRACKS.length - 1));
     }
   }, [activeSectionIndex, isUserSelected, isPinned]);
@@ -320,9 +336,30 @@ export default function FehmidaPage() {
               className="flex items-center gap-2 text-[#E65100] hover:text-[#FF6B35] transition-colors cursor-pointer"
               aria-label={isHeroMuted ? 'Unmute audio' : 'Mute audio'}
             >
-              {isHeroMuted
-                ? <VolumeX size={20} strokeWidth={1.5} />
-                : <Volume2 size={20} strokeWidth={1.5} />}
+              {/* Icon + hotspot ripple rings — disappear on first click */}
+              <span className="relative flex items-center justify-center w-5 h-5">
+                <AnimatePresence>
+                  {isHeroMuted && (
+                    <motion.span
+                      key="ripples"
+                      className="absolute inset-0 pointer-events-none"
+                      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                    >
+                      {[1.5, 2.4].map((delay, i) => (
+                        <motion.span
+                          key={i}
+                          className="absolute rounded-full border border-[#E65100] inset-[-7px]"
+                          animate={{ scale: [1, 3.2], opacity: [0.55 - i * 0.15, 0] }}
+                          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.5, delay }}
+                        />
+                      ))}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+                {isHeroMuted
+                  ? <VolumeX size={20} strokeWidth={1.5} />
+                  : <Volume2 size={20} strokeWidth={1.5} />}
+              </span>
               <span className="font-sans text-[12px] uppercase tracking-[1.5px] text-[#E65100]">
                 {isHeroMuted ? 'play audio' : 'mute'}
               </span>
@@ -459,7 +496,7 @@ export default function FehmidaPage() {
               </p>
               <div className="font-sans text-[18px] md:text-[24px] leading-[1.25] text-[#EDE8DC] space-y-5">
                 <p>
-                  In the late 1970s, Fahmida Riaz&apos;s magazine <em>Awaz</em> became a target under General Zia-ul-Haq. The state accused her of sedition; over ten criminal cases were filed, and she was forced to flee Pakistan with her children.
+                  In the late 1970s, Fehmida Riaz&apos;s magazine <em>Awaz</em> became a target under General Zia-ul-Haq. The state accused her of sedition; over ten criminal cases were filed, and she was forced to flee Pakistan with her children.
                 </p>
                 <p>
                   Exile could have silenced her, yet Riaz refused to retreat. Across borders, she continued to write, translate, and speak, insisting that the power of the word could not be confined by prisons, borders, or bans.
@@ -492,91 +529,109 @@ export default function FehmidaPage() {
           </div>
         </section>
 
-        {/* 3. Bodies in Public */}
-        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex items-center bg-[#EDE8DC] text-[#141312] px-7 md:px-12">
-          <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
-
-            {/* Left: label + intro */}
-            <div className="flex flex-col gap-6 md:gap-8 overflow-y-auto max-h-[50vh] md:max-h-none">
-              <p className="font-sans font-medium text-[16px] uppercase tracking-[1.2px] text-[#E65100]">
-                Bodies in Public
-              </p>
-              <div className="font-sans text-[16px] md:text-[24px] leading-[1.25] text-[#141312] space-y-4 md:space-y-5">
-                <p>
-                  When General Zia-ul-Haq&apos;s regime decreed that women must wear a black chadar, Riaz&apos;s fiery poem <em>Chadar Aur Chaar Diwaari</em> responded with defiance.
-                </p>
-                <p>
-                  Addressing the state directly, her words insist that women&apos;s bodies and lives cannot be confined. She invests within the dark shroud multiple meanings, wrestling it back from those seeking to impose it on her and other women:
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Urdu poetry + translation + orange vertical line */}
-            <div className="flex items-stretch gap-6 md:gap-8 justify-end">
-              <div className="flex flex-col gap-8 md:gap-12 text-right">
-                {/* Urdu poetry — Noto Nastaliq, RTL, leading-[2.47] per Figma */}
-                <p className="font-urdu text-[18px] md:text-[24px] leading-[2.47] text-[#1C1917]" style={{ direction: 'rtl' }}>
-                  نہ سوگ میں ہوں کہ اس کو اوڑھوں<br />
-                  غم و الم خلق کو دکھاؤں<br />
-                  نہ روگ ہوں میں کہ اس کی تاریکیوں میں خفت سے ڈوب جاؤں<br />
-                  نہ میں گناہگار ہوں نہ مجرم<br />
-                  کہ اس سیاہی کی مہر اپنی جبیں پہ ہر حال میں لگاؤں
-                </p>
-                {/* English translation */}
-                <div className="font-sans text-[14px] md:text-[16px] leading-[1.25] text-[#1C1917] text-left space-y-1">
-                  <p>I am not in mourning that I should wear this</p>
-                  <p>To flag my grief to the world</p>
-                  <p>I am not a disease that needs to be drowned in secret darkness</p>
-                  <p>I am not a sinner nor a criminal</p>
-                  <p>That I should stamp my forehead with its darkness</p>
-                </div>
-              </div>
-              <div className="w-[3px] bg-[#E65100] self-stretch shrink-0 rounded-full" />
-            </div>
-          </div>
-
-          <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none">
+        {/* 3. Expression — Fehmida Riaz on expression */}
+        {/*
+          Images:
+          1. /public/spool-woman-collage.png  ← place here
+          2. /public/bg-noise.png             ← already exists
+        */}
+        <section
+          className="h-screen w-full flex-shrink-0 relative overflow-hidden"
+          style={{ background: '#f1e1d0' }}
+        >
+          {/* Noise texture — reuses existing /public/bg-noise.png */}
+          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
             <Image src="/bg-noise.png" alt="" fill className="object-cover" />
           </div>
-        </section>
 
-        {/* 4. 1983 Bombay */}
-        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex items-center bg-[#141312] text-[#EDE8DC] px-7 md:px-12">
-          {/* Background photo */}
-          <div className="absolute inset-0 z-0 opacity-50 pointer-events-none">
-            <Image src="/bombay-bg.png" alt="" fill className="object-cover object-center" />
+          {/* Collage layer — /public/spool-woman-collage.png */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            <Image
+              src="/spool-woman-collage.png"
+              alt="Reel-to-reel tape spool and Fehmida Riaz reading"
+              fill
+              className="object-cover object-left-top"
+            />
           </div>
 
-          <div className="relative z-10 w-full max-w-[526px] mx-auto flex flex-col gap-10 md:gap-14 overflow-y-auto max-h-[85vh] md:max-h-none">
-            <div className="flex flex-col gap-6 md:gap-8">
-              {/* label */}
-              <p className="font-sans text-[10px] uppercase tracking-[1.2px] text-[#EEE5DB]">
-                1983 Bombay
-              </p>
-              {/* intro */}
-              <p className="font-sans text-[14px] md:text-[16px] leading-[1.2] text-[#EDE8DC]">
-                In 1983, police raided her home in Bombay searching for &ldquo;subversive&rdquo; material. In <em>House Raid</em>, Riaz captures the tension of the moment, where the walls of her own house, usually a private refuge, became sites of surveillance and threat:
-              </p>
-              {/* Quote with orange line */}
-              <div className="flex items-stretch gap-6">
-                <div className="w-[2px] bg-[#E65100] self-stretch shrink-0 rounded-full" />
-                <div className="font-heading text-[20px] md:text-[24px] leading-[1.1] text-[#EDE8DC] space-y-4">
-                  <p>
-                    &ldquo;I hadn&apos;t seen my house this way before. I can hear my heart racing in the doors and walls&hellip;
-                  </p>
-                  <p>
-                    Now, new essays will be written on the city wall&hellip; And so, the root of this fear is just an old book. Pull aside this curtain and look — at the vision of my future.&rdquo;
-                  </p>
-                </div>
-              </div>
+          {/* ── Desktop text block — right side, ~58% from left ── */}
+          <div
+            className="absolute z-20 hidden md:flex flex-col gap-[10px]"
+            style={{ left: '58%', top: '34%' }}
+          >
+            {/* "Fehmida Riaz on expression" */}
+            <div className="flex items-baseline gap-2">
+              <span className="font-sans text-[28px] leading-[1.2] text-[#1c1917]">
+                Fehmida Riaz on
+              </span>
+              <span className="font-heading italic text-[36px] leading-[1.18] text-[#e65100]">
+                expression
+              </span>
             </div>
-
-            {/* Body text below */}
-            <p className="font-sans text-[14px] md:text-[16px] leading-[1.2] text-[#EDE8DC]">
-              Even under intimidation, Riaz transforms fear into creative and public possibility, insisting that literature itself is a space of resistance.
+            {/* Body */}
+            <p className="font-sans text-[20px] leading-[1.18] text-[#1c1917] max-w-[565px]">
+              When asked to write a foreword for her poetry collection ....
             </p>
+
+            {/* Inline play button */}
+            <button
+              onClick={handleInlinePlay}
+              className="flex items-center gap-3 mt-4 group cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#E65100] flex items-center justify-center flex-shrink-0 group-hover:opacity-85 transition-opacity">
+                {isSection3TrackPlaying
+                  ? <Pause size={13} fill="white" className="text-white" />
+                  : <Play size={13} fill="white" className="ml-[2px] text-white" />}
+              </div>
+              <span className="font-sans text-[13px] uppercase tracking-[1.2px] text-[#1c1917] opacity-60 group-hover:opacity-80 transition-opacity">
+                {isSection3TrackPlaying ? 'pause' : 'listen · shehar walo'}
+              </span>
+            </button>
+          </div>
+
+          {/* ── Mobile text block — bottom of screen ── */}
+          <div className="md:hidden absolute bottom-24 left-0 right-0 z-20 flex flex-col gap-3 px-7">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="font-sans text-[22px] leading-[1.2] text-[#1c1917]">
+                Fehmida Riaz on
+              </span>
+              <span className="font-heading italic text-[28px] leading-[1.18] text-[#e65100]">
+                expression
+              </span>
+            </div>
+            <p className="font-sans text-[16px] leading-[1.25] text-[#1c1917]">
+              When asked to write a foreword for her poetry collection ....
+            </p>
+            {/* Mobile inline play */}
+            <button
+              onClick={handleInlinePlay}
+              className="flex items-center gap-3 mt-1 group cursor-pointer"
+            >
+              <div className="w-8 h-8 rounded-full bg-[#E65100] flex items-center justify-center flex-shrink-0">
+                {isSection3TrackPlaying
+                  ? <Pause size={12} fill="white" className="text-white" />
+                  : <Play size={12} fill="white" className="ml-[2px] text-white" />}
+              </div>
+              <span className="font-sans text-[11px] uppercase tracking-[1.2px] text-[#1c1917] opacity-50">
+                {isSection3TrackPlaying ? 'pause' : 'listen · paish lafz'}
+              </span>
+            </button>
           </div>
         </section>
+
+        {/* OLD SECTION 3 — Bodies in Public (commented out, replaced by Expression above) */}
+        {/*
+        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex items-center bg-[#EDE8DC] text-[#141312] px-7 md:px-12">
+          ...
+        </section>
+        */}
+
+        {/* OLD SECTION 4 — 1983 Bombay (commented out) */}
+        {/*
+        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex items-center bg-[#141312] text-[#EDE8DC] px-7 md:px-12">
+          ...
+        </section>
+        */}
 
         {/* 5. Related Stories */}
         <section className="h-screen w-full flex-shrink-0">
@@ -586,8 +641,9 @@ export default function FehmidaPage() {
       </div>
 
       <StickyAudioPlayer
+        ref={playerRef}
         trackTitle={currentTrack.title}
-        src={currentTrack.src}
+        src={playerSrc}
         isVisible={playerVisible}
         autoPlay={playerVisible && !isUserSelected && !isPinned}
         tracks={TRACKS.map((t) => ({ name: t.name, src: t.src }))}
@@ -596,6 +652,7 @@ export default function FehmidaPage() {
         onTrackEnded={handleTrackEnded}
         isPinned={isPinned}
         onPinToggle={setIsPinned}
+        onIsPlayingChange={setIsPlayerPlaying}
         variant="orange"
       />
     </>

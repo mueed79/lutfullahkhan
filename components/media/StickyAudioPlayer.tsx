@@ -1,8 +1,13 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, ChevronUp, Music2, Pin } from 'lucide-react';
+
+export interface StickyAudioPlayerHandle {
+  play: () => void;
+  pause: () => void;
+}
 
 interface StickyAudioPlayerProps {
   trackTitle?: string;
@@ -15,11 +20,12 @@ interface StickyAudioPlayerProps {
   currentTrackIndex?: number;
   isPinned?: boolean;
   onPinToggle?: (pinned: boolean) => void;
+  onIsPlayingChange?: (playing: boolean) => void;
   /** 'orange' = warm brand bar (light sections), 'dark' = near-black bar (dark sections) */
   variant?: 'orange' | 'dark';
 }
 
-const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
+const StickyAudioPlayer = forwardRef<StickyAudioPlayerHandle, StickyAudioPlayerProps>(({
   trackTitle = '',
   src = '',
   isVisible = true,
@@ -30,8 +36,9 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
   currentTrackIndex = 0,
   isPinned = false,
   onPinToggle = () => {},
+  onIsPlayingChange,
   variant = 'orange',
-}) => {
+}, ref) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [currentTime, setCurrentTime] = useState("0:00");
@@ -49,18 +56,45 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
     if (!audio || !src) return;
     audio.pause();
     audio.src = src;
-    audio.load();
     setCurrentTime("0:00");
     setIsPlaying(false);
     if (autoPlay) {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      // Let play() drive the load — calling load() first can abort the play
+      // request with an AbortError when the previous track was mid-playback.
+      audio.muted = true;
+      audio.play().then(() => {
+        audio.muted = false;
+        setIsPlaying(true);
+      }).catch(() => { setIsPlaying(false); });
+    } else {
+      audio.load();
     }
-  }, [src]);
+  }, [src, isVisible, autoPlay]);
 
   // Stop audio on unmount
   useEffect(() => {
     return () => { audioRef.current?.pause(); };
   }, []);
+
+  // Expose play/pause to parent via ref
+  useImperativeHandle(ref, () => ({
+    play: () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    },
+    pause: () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      audio.pause();
+      setIsPlaying(false);
+    },
+  }));
+
+  // Notify parent when playing state changes
+  useEffect(() => {
+    onIsPlayingChange?.(isPlaying);
+  }, [isPlaying, onIsPlayingChange]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -261,6 +295,7 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
       )}
     </AnimatePresence>
   );
-};
+});
 
+StickyAudioPlayer.displayName = 'StickyAudioPlayer';
 export default StickyAudioPlayer;
