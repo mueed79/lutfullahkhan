@@ -28,7 +28,7 @@ export default function RelatedStories({
   return (
     /* bg: bg-[#EDE8DC] | padding: px-8 md:px-24 py-16 md:py-24 */
     <section
-      className={`w-full bg-[#EDE8DC] text-[#2b2a29] px-8 md:px-24 py-16 md:py-24 flex flex-col justify-between${fullHeight ? ' h-screen flex-shrink-0' : ''}`}
+      className={`w-full bg-[#EDE8DC] text-[#2b2a29] px-8 md:px-24 py-16 md:py-16 flex flex-col justify-between${fullHeight ? ' h-screen flex-shrink-0' : ''}`}
     >
       {/* ── Top row: tagline left / archive branding right ───────────── */}
       <div className="flex items-start justify-between w-full">
@@ -54,7 +54,7 @@ export default function RelatedStories({
 
       {/* ── Cards row ────────────────────────────────────────────────── */}
       {/* gap-6 md:gap-7 ← space between cards */}
-      <div className="flex items-end gap-6 md:gap-7 mt-14 md:mt-0">
+      <div className="flex items-end gap-6 md:gap-7 mt-14 md:mt-0 md:max-w-[72%]">
         {cards.map((story, i) => {
           const heightClass = CARD_HEIGHTS[i % CARD_HEIGHTS.length];
           const inner = (

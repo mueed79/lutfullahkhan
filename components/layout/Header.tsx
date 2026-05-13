@@ -33,6 +33,8 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  /* true while user is on the first snap section — suppresses header bg */
+  const [isFirstSection, setIsFirstSection] = useState(true);
 
   /* ── Non-homepage: visible on load → hidden after first scroll ── */
   const [hoverVisible, setHoverVisible] = useState(true);  // starts true so first setHoverVisible(false) triggers re-render
@@ -85,13 +87,15 @@ export default function Header() {
       const { scrollTop } = (e as CustomEvent<{ scrollTop: number }>).detail;
       const sectionHeight = window.innerHeight;
       if (scrollTop < sectionHeight * 0.5) {
-        // Back at the first section — always visible
+        // Back at the first section — always visible, no bg
         hasScrolledOnce.current = false;
         setHoverVisible(true);
+        setIsFirstSection(true);
       } else {
         hasScrolledOnce.current = true;
         setHoverVisible(false);
         setIsDropdownOpen(false);
+        setIsFirstSection(false);
       }
       setIsMobileMenuOpen(false);
     };
@@ -143,9 +147,10 @@ export default function Header() {
     : (hasScrolledOnce.current ? !hoverVisible : false);
 
   /* ── Decide whether bg should be frosted ────────────────────────── */
+  // On non-homepage first section (snap-scroll hero), header is always transparent
   const hasBg = isHomepage
     ? (scrolled || isDropdownOpen)
-    : (hoverVisible || isDropdownOpen);
+    : (isDropdownOpen || (!isFirstSection && hoverVisible));
 
   return (
     <motion.header

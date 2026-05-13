@@ -191,7 +191,7 @@ export default function FaizPage() {
     <div
       ref={containerRef}
       className="h-screen overflow-y-scroll bg-[#1C1917] text-[#FAF5EF] overflow-x-hidden"
-      style={{ scrollbarWidth: 'none' }}
+      style={{ scrollbarWidth: 'none', overflowAnchor: 'none' }}
     >
       {/* 1. Hero */}
       <section
@@ -290,7 +290,7 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-center px-7 md:px-16 py-8 md:py-0 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-7 md:px-16 py-7 md:py-0 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
           <div className="max-w-[480px] space-y-5 md:space-y-8">
             <p className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Recording Sessions, Karachi 1964 – 1984</p>
             <div className="relative pl-6 md:pl-10">
@@ -532,7 +532,7 @@ export default function FaizPage() {
             </button>
           </div>
 
-          <div className="flex flex-col items-center md:items-start gap-4 order-1 md:order-2 w-full">
+          <div className="flex flex-col items-center gap-4 order-1 md:order-2 w-full">
             <div
               className="relative w-full max-h-[55vh] aspect-[1220/1272] max-w-[320px] md:max-w-[380px] shadow-2xl group cursor-pointer overflow-hidden rounded-sm"
               onClick={() => setShowLetterTranscription(!showLetterTranscription)}

@@ -38,7 +38,7 @@ export const stories: Story[] = [
   },
   {
     name: "Fahmida Riaz",
-    slug: null,
+    slug: "fehmida",
     tagline: "poetry as defiance",
     coverImage: "/fehmida-cover.jpg",
   },
