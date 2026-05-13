@@ -1,23 +1,36 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, ChevronUp, Music2 } from 'lucide-react';
+import { Play, Pause, ChevronUp, Music2, Pin } from 'lucide-react';
 
 interface StickyAudioPlayerProps {
-  activeTrack?: string;
-  theme?: 'orange' | 'dark';
   trackTitle?: string;
   src?: string;
   isVisible?: boolean;
+  autoPlay?: boolean;
+  tracks?: Array<{ name: string; src: string }>;
+  onTrackSelect?: (index: number) => void;
+  onTrackEnded?: () => void;
+  currentTrackIndex?: number;
+  isPinned?: boolean;
+  onPinToggle?: (pinned: boolean) => void;
+  /** 'orange' = warm brand bar (light sections), 'dark' = near-black bar (dark sections) */
+  variant?: 'orange' | 'dark';
 }
 
-const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({ 
-  activeTrack = 'chand roz',
-  theme = 'orange',
-  trackTitle = 'Chand Roz Aur Meri Jaan',
-  src = '/audio/chand-roz.mp3',
-  isVisible = true
+const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
+  trackTitle = '',
+  src = '',
+  isVisible = true,
+  autoPlay = false,
+  tracks = [],
+  onTrackSelect = () => {},
+  onTrackEnded = () => {},
+  currentTrackIndex = 0,
+  isPinned = false,
+  onPinToggle = () => {},
+  variant = 'orange',
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -30,137 +43,173 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  const tracks = ['tere honton', 'chand roz', 'bol'];
-  
-  const isOrange = theme === 'orange';
-  const finalBgColor = isOrange ? 'bg-[#E65100]' : 'bg-[#1C1816]';
-  const finalTextColor = 'text-white';
-  const waveformColor = isOrange ? 'white' : '#E65100';
+  // Load and autoplay when src changes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !src) return;
+    audio.pause();
+    audio.src = src;
+    audio.load();
+    setCurrentTime("0:00");
+    setIsPlaying(false);
+    if (autoPlay) {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, [src]);
+
+  // Stop audio on unmount
+  useEffect(() => {
+    return () => { audioRef.current?.pause(); };
+  }, []);
 
   const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
     }
   };
+
+  /* ── Theme tokens ──────────────────────────────────────────────────────
+     bar bg:          bg-[#E65100]        | bg-[#111110]
+     waveform bar:    bg-white            | bg-[#E65100]
+     waveform opacity idle/play: 35/70%  | 25/65%
+     bubble bg:       bg-[#E65100]        | bg-[#111110]               */
+  const isDark = variant === 'dark';
+  const barBg        = isDark ? 'bg-[#111110]'  : 'bg-[#E65100]';
+  const bubbleBg     = isDark ? 'bg-[#111110]'  : 'bg-[#E65100]';
+  const waveColor    = isDark ? '#E65100'        : 'white';
+  const waveOpacity  = isDark
+    ? (isPlaying ? 'opacity-65' : 'opacity-25')
+    : (isPlaying ? 'opacity-70' : 'opacity-35');
+
+  /* ── Waveform bar heights (20-value pattern, 80 bars total) ─────────── */
+  const BAR_HEIGHTS = [6, 22, 12, 34, 8, 28, 14, 40, 10, 32, 18, 44, 8, 26, 16, 38, 12, 30, 20, 42];
 
   return (
     <AnimatePresence>
       {isVisible && (
         <>
-          {/* Full Player Bar */}
-          <motion.div 
-            initial={{ y: 100 }}
-            animate={{ y: isMinimized ? 120 : 0 }}
-            exit={{ y: 100 }}
+          {/* ── Full player bar ─────────────────────────────────────────
+              height: h-[72px]  |  side padding: px-6 md:px-12         */}
+          <motion.div
+            initial={{ y: 90 }}
+            animate={{ y: isMinimized ? 90 : 0 }}
+            exit={{ y: 90 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className={`fixed bottom-0 left-0 right-0 h-[70px] md:h-[80px] ${finalBgColor} ${finalTextColor} z-50 flex items-center px-4 md:px-12 transition-colors duration-700 ease-in-out border-t border-white/10`}
+            className={`fixed bottom-0 left-0 right-0 h-[72px] ${barBg} text-white z-50 flex items-center px-6 md:px-12 border-t border-white/10 transition-colors duration-700`}
           >
             <audio
               ref={audioRef}
-              src={src}
-              onEnded={() => setIsPlaying(false)}
+              onEnded={() => { setIsPlaying(false); onTrackEnded(); }}
               onTimeUpdate={(e) => setCurrentTime(formatTime((e.target as HTMLAudioElement).currentTime))}
             />
 
-            {/* Left: Track List (Hidden on Mobile) */}
-            <div className="hidden md:flex items-center gap-6 w-1/4">
-              {tracks.map((track) => (
-                <div key={track} className="relative group cursor-pointer">
-                  <span className={`text-[11px] uppercase tracking-[0.2em] transition-all duration-300 font-sans ${
-                    activeTrack === track 
-                      ? `text-white font-bold italic underline underline-offset-8 decoration-white` 
-                      : `text-white/40 hover:text-white`
-                  }`}>
-                    {track}
-                  </span>
-                </div>
+            {/* ── LEFT: Track list ──────────────────────────────────────
+                gap-5 md:gap-7 ← space between track names
+                text-[11px]    ← track name font size                  */}
+            <div className="flex items-center gap-5 md:gap-7 shrink-0">
+              {tracks.map((track, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => onTrackSelect(idx)}
+                  className={`text-[11px] tracking-[0.04em] transition-all duration-300 font-sans whitespace-nowrap leading-none ${
+                    idx === currentTrackIndex
+                      ? 'text-white italic underline underline-offset-[5px] decoration-white/70 font-normal cursor-pointer'
+                      : 'text-white/45 hover:text-white/75 cursor-pointer font-normal'
+                  }`}
+                >
+                  {track.name.toLowerCase()}
+                </button>
               ))}
             </div>
 
-            {/* Center: Waveform & Play Control */}
-            <div className="flex-1 flex items-center justify-center gap-4 md:gap-8">
-              <button 
-                onClick={togglePlay}
-                className={`w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/40 flex items-center justify-center hover:scale-105 transition-transform shrink-0`}
-              >
-                {isPlaying ? <Pause size={18} fill="white" className="text-white" /> : <Play size={18} className="ml-1 text-white" fill="white" />}
-              </button>
+            {/* ── PLAY BUTTON ─────────────────────────────────────────
+                ml-8 md:ml-12 ← gap from track list
+                w-9 h-9       ← button size                            */}
+            <button
+              onClick={togglePlay}
+              className="ml-8 md:ml-12 w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:scale-105 transition-transform shrink-0"
+            >
+              {isPlaying ? (
+                <Pause size={14} fill="white" className="text-white" />
+              ) : (
+                <Play size={14} className="ml-[2px] text-white" fill="white" />
+              )}
+            </button>
 
-              {/* Waveform Visualization (Simplified on Mobile) */}
-              <div className="flex items-center gap-[2px] md:gap-[3px] h-10 md:h-12 w-[100px] md:w-[600px] overflow-hidden opacity-50 md:opacity-100">
-                {[...Array(20)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ 
-                      height: isPlaying ? [10, 30, 15, 40, 10][i % 5] : 4 
-                    }}
-                    transition={{ 
-                      repeat: Infinity, 
-                      duration: 0.8, 
-                      delay: i * 0.02,
-                      ease: "easeInOut"
-                    }}
-                    className="w-[2px] rounded-full"
-                    style={{ backgroundColor: waveformColor }}
-                  />
-                ))}
-                {/* Desktop extended bars */}
-                <div className="hidden md:flex items-center gap-[3px]">
-                   {[...Array(60)].map((_, i) => (
-                    <motion.div
-                      key={i + 20}
-                      animate={{ 
-                        height: isPlaying ? [10, 30, 15, 40, 10][(i + 20) % 5] : 4 
-                      }}
-                      transition={{ 
-                        repeat: Infinity, 
-                        duration: 0.8, 
-                        delay: (i + 20) * 0.02,
-                        ease: "easeInOut"
-                      }}
-                      className="w-[2px] rounded-full"
-                      style={{ backgroundColor: waveformColor }}
-                    />
-                  ))}
-                </div>
-              </div>
+            {/* ── WAVEFORM ─────────────────────────────────────────────
+                flex-1      ← fills remaining space
+                mx-4 md:mx-6 ← side margins from play btn / info block */}
+            <div className={`flex-1 flex items-center gap-[2px] md:gap-[2.5px] h-10 mx-4 md:mx-6 overflow-hidden transition-opacity duration-500 ${waveOpacity}`}>
+              {[...Array(80)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ height: isPlaying ? BAR_HEIGHTS[i % BAR_HEIGHTS.length] : 3 }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    duration: 0.6 + (i % 7) * 0.07,
+                    delay: i * 0.015,
+                    ease: 'easeInOut',
+                  }}
+                  className="w-[2px] rounded-full shrink-0"
+                  style={{ backgroundColor: waveColor }}
+                />
+              ))}
             </div>
 
-            {/* Right: Track Info */}
-            <div className="w-auto md:w-1/4 flex items-center justify-end gap-3 md:gap-6">
-              <div className="text-right">
-                <p className="text-[14px] md:text-[18px] font-heading italic font-light leading-none whitespace-nowrap">{trackTitle}</p>
-                <p className="hidden md:block text-[11px] opacity-60 mt-2 font-mono">{currentTime}</p>
+            {/* ── RIGHT: Now-playing title + timestamp + pin + close ───
+                font-display italic  ← PP Editorial New italic
+                text-[13px]          ← title size
+                text-[10px]          ← timestamp size                  */}
+            <div className="flex items-center gap-3 md:gap-4 shrink-0">
+              <div className="hidden md:block text-right">
+                <p className="font-display italic text-[13px] leading-none text-white/90 mb-[4px]">
+                  {trackTitle}
+                </p>
+                <p className="text-[10px] leading-none text-white/50 tabular-nums">
+                  {currentTime}
+                </p>
               </div>
-              <button 
-                onClick={() => setIsMinimized(true)}
-                className={`w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors group shrink-0`}
+
+              {/* Pin */}
+              <button
+                onClick={() => onPinToggle(!isPinned)}
+                className="w-8 h-8 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition-colors group shrink-0"
+                title={isPinned ? 'Unpin audio' : 'Pin audio'}
               >
-                <ChevronUp size={16} className="rotate-180 group-hover:translate-y-[2px] transition-transform" />
+                <Pin
+                  size={13}
+                  fill={isPinned ? 'white' : 'none'}
+                  className={`transition-all ${isPinned ? 'text-white' : 'text-white/55 group-hover:text-white'}`}
+                />
+              </button>
+
+              {/* Minimise */}
+              <button
+                onClick={() => setIsMinimized(true)}
+                className="w-8 h-8 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition-colors group shrink-0"
+              >
+                <ChevronUp size={13} className="rotate-180 group-hover:translate-y-[2px] transition-transform text-white/80" />
               </button>
             </div>
           </motion.div>
 
-          {/* Minimized Floating Button */}
+          {/* ── Minimised bubble ────────────────────────────────────── */}
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
-              scale: isMinimized ? 1 : 0,
-              opacity: isMinimized ? 1 : 0,
-              y: isMinimized ? 0 : 50
-            }}
+            animate={{ scale: isMinimized ? 1 : 0, opacity: isMinimized ? 1 : 0 }}
             onClick={() => setIsMinimized(false)}
-            className={`fixed bottom-8 right-8 w-14 h-14 rounded-full ${finalBgColor} ${finalTextColor} z-[60] shadow-2xl flex items-center justify-center border border-white/20 transition-colors duration-700 hover:scale-110 active:scale-95`}
+            className={`fixed bottom-8 right-8 w-14 h-14 rounded-full ${bubbleBg} z-[60] shadow-2xl flex items-center justify-center border border-white/20 hover:scale-110 active:scale-95 transition-transform`}
           >
-            <Music2 size={24} />
+            <Music2 size={22} />
             {isPlaying && (
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center">
-                 <span className="w-2 h-2 bg-[#E65100] rounded-full animate-pulse" />
+                <span className="w-2 h-2 bg-[#E65100] rounded-full animate-pulse" />
               </span>
             )}
           </motion.button>

@@ -23,17 +23,43 @@ export interface Collection {
 export interface Story {
   name: string;
   slug: string | null;
+  /** Short story tagline shown on cross-reference cards */
+  tagline?: string;
+  /** Cover image path (relative to /public) for cross-reference cards */
+  coverImage?: string;
 }
 
 export const stories: Story[] = [
-  { name: "Faiz Ahmed Faiz", slug: "faiz" },
-  { name: "Josh Malihabadi", slug: null },
-  { name: "Fahmida Riaz", slug: null },
-  { name: "Hafeez Jalandhari", slug: null },
-  { name: "Atiya Begum Fyzee", slug: null },
-  { name: "Begum Ra'ana Liaquat Ali Khan", slug: null },
-  { name: "Roshan Ara Begum", slug: null },
-  { name: "Akhtar ul-Iman", slug: null },
+  {
+    name: "Faiz Ahmed Faiz",
+    slug: "faiz",
+    tagline: "a voice that could not be silenced",
+    coverImage: "/public/faiz-cover.jpg",
+  },
+  {
+    name: "Fahmida Riaz",
+    slug: null,
+    tagline: "poetry as defiance",
+    coverImage: "/public/fehmida-cover.jpg",
+  },
+  {
+    name: "Sadequain",
+    slug: null,
+    tagline: "sacred forms, modern anguish",
+    coverImage: "/public/sadequain-cover.jpg",
+  },
+  {
+    name: "Ismat Chughtai",
+    slug: null,
+    tagline: "the trouble with telling the truth",
+    coverImage: "/public/ismat-cover.jpg",
+  },
+  { name: "Josh Malihabadi", slug: null, tagline: "the last romantic rebel" },
+  { name: "Hafeez Jalandhari", slug: null, tagline: "anthem of a new nation" },
+  { name: "Atiya Begum Fyzee", slug: null, tagline: "a woman ahead of every era" },
+  { name: "Begum Ra'ana Liaquat Ali Khan", slug: null, tagline: "grace and resolve" },
+  { name: "Roshan Ara Begum", slug: null, tagline: "the voice of a century" },
+  { name: "Akhtar ul-Iman", slug: null, tagline: "the solitary modernist" },
 ];
 
 export const collectionsData: Record<string, Collection> = {
