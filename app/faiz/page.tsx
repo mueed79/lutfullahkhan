@@ -158,10 +158,30 @@ export default function FaizPage() {
       if (next !== current) snapToSection(next);
     };
 
+    // Touch swipe — mobile snap
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isAnimating) return;
+      const diff = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(diff) < 40) return; // too short — ignore
+      const dir = diff > 0 ? 1 : -1;
+      const sectionCount = container.querySelectorAll('section').length;
+      const current = Math.round(container.scrollTop / container.clientHeight);
+      const next = Math.max(0, Math.min(sectionCount - 1, current + dir));
+      if (next !== current) snapToSection(next);
+    };
+
     container.addEventListener('wheel', handleWheel, { passive: false });
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('keydown', handleKey);
     return () => {
       container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKey);
     };
   }, []);
@@ -175,10 +195,11 @@ export default function FaizPage() {
     >
       {/* 1. Hero */}
       <section
-        className="h-screen w-full flex-shrink-0 relative flex flex-col items-center justify-center px-6 overflow-hidden"
+        className="h-screen w-full flex-shrink-0 relative overflow-hidden flex flex-col items-center justify-center px-6"
         style={{ background: 'linear-gradient(180deg, #141312 0%, #232222 100%)' }}
       >
-        <div className="absolute right-[-120px] md:right-[-80px] bottom-[-60px] md:bottom-[-80px] w-[280px] h-[280px] md:w-[480px] md:h-[480px] mix-blend-color-dodge opacity-90 pointer-events-none z-[5]">
+        {/* Spool — mobile only */}
+        <div className="md:hidden absolute left-1/2 bottom-[-80px] w-[360px] h-[360px] mix-blend-color-dodge opacity-90 pointer-events-none z-[15]" style={{ transform: 'translateX(calc(-50% + 204px))' }}>
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -188,25 +209,66 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="relative z-20 max-w-[900px] text-center mb-12 md:mb-24 px-4">
+        {/* Spool — desktop only */}
+        <div className="hidden md:block absolute right-[-80px] bottom-[-80px] w-[480px] h-[480px] mix-blend-color-dodge opacity-90 pointer-events-none z-[10]">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="w-full h-full relative"
+          >
+            <Image src="/fahmida-spool.png" alt="Tape Spool" fill className="object-contain" priority />
+          </motion.div>
+        </div>
+
+        {/* ── MOBILE layout ── */}
+        <div className="md:hidden absolute top-0 left-0 w-full h-full flex flex-col px-6 pt-40 z-20">
+          {/* Decorative quote mark */}
+          <span className="text-[96px] text-[#2e291f] font-bold select-none" style={{ lineHeight: '56px' }}>&ldquo;</span>
+
+          {/* Quote + attribution */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 space-y-5"
+          >
+            <h1 className="text-[48px] font-sans font-medium leading-[1.2] text-[#EDE8DC]">
+              &ldquo;Faiz was not my personal friend.<br />
+              He was my benefactor.&rdquo;
+            </h1>
+            <p className="text-[14px] font-sans font-medium text-[#F6EBE0] opacity-80">
+              &ndash; Lutfullah Khan
+            </p>
+          </motion.div>
+        </div>
+
+        {/* ── DESKTOP layout ── */}
+        <div className="hidden md:block relative z-20 max-w-[900px] text-center mb-24 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-8 md:space-y-12"
+            className="space-y-12"
           >
-            <h1 className="text-[32px] md:text-[64px] font-sans leading-[1.2] md:leading-[1.1] tracking-tight text-[#EDE8DC]">
+            <h1 className="text-[64px] font-sans leading-[1.1] tracking-tight text-[#EDE8DC]">
               &ldquo;Faiz was not my personal friend.
-              <br className="hidden md:block" />
+              <br />
               He was my <span className="text-[#E65100] italic font-heading font-thin">benefactor</span>.&rdquo;
             </h1>
-            <p className="text-[12px] md:text-body-lg uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-40 font-bold">
+            <p className="text-body-lg uppercase tracking-[0.4em] opacity-40 font-bold">
               &mdash; Lutfullah Khan
             </p>
           </motion.div>
         </div>
 
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20">
+        {/* ── MOBILE "LISTEN" indicator at bottom ── */}
+        <div className="md:hidden absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20">
+          <span className="text-[10px] uppercase tracking-[0.4em] opacity-60 font-bold text-white">Listen</span>
+          <div className="w-[1px] h-16" style={{ background: 'linear-gradient(180deg, rgba(230,81,0,0.8) 0%, rgba(230,81,0,0) 100%)' }} />
+        </div>
+
+        {/* ── DESKTOP scroll indicator ── */}
+        <div className="hidden md:flex absolute bottom-12 left-1/2 -translate-x-1/2 flex-col items-center gap-4 z-20">
           <span className="text-[10px] uppercase tracking-[0.4em] opacity-60 font-bold">Scroll</span>
           <div className="w-[2px] h-16" style={{ background: 'linear-gradient(180deg, #E65100 0%, rgba(230, 81, 0, 0) 100%)' }} />
         </div>
@@ -338,7 +400,7 @@ export default function FaizPage() {
           {/* label: text-[10px] md:text-[12px] ← size */}
           <p className="text-[10px] md:text-[12px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1951 – Resistance in confinement</p>
           {/* prose: text-[16px] md:text-[18px] ← size */}
-          <div className="space-y-4 md:space-y-5 text-[14px] md:text-[18px] font-regular leading-relaxed opacity-80">
+          <div className="space-y-4 md:space-y-5 text-[16px] md:text-[18px] font-regular leading-relaxed opacity-80">
             <p>
               In 1951, he was arrested in the famous Rawalpindi Conspiracy Case and spent four years in jails across Pakistan, often in solitary confinement.
             </p>
@@ -352,13 +414,13 @@ export default function FaizPage() {
         <div className="self-end flex items-start gap-6 md:gap-8">
           <div className="space-y-2 md:space-y-6 text-right">
             {/* Urdu: text-[20px] md:text-[26px] ← size */}
-            <p className="text-[16px] md:text-[26px] font-heading leading-snug" style={{ direction: 'rtl' }}>
+            <p className="text-[18px] md:text-[26px] font-heading leading-snug" style={{ direction: 'rtl' }}>
               متاعِ لوح و قلم چھن گئی تو کیا غم ہے<br/>
               کہ خونِ دل میں ڈبو لی ہیں انگلیاں میں نے<br/>
               زبان پہ مہر لگی ہے تو کیا
             </p>
             {/* translation: text-[12px] md:text-[13px] ← size */}
-            <div className="space-y-1 opacity-55 text-[12px] md:text-[13px] leading-relaxed font-regular text-left mt-4 md:mt-6">
+            <div className="space-y-1 opacity-55 text-[14px] md:text-[13px] leading-relaxed font-regular text-left mt-4 md:mt-6">
               <p>My pen and tablet, all that I had, taken away from me. But what is there to grieve for?</p>
               <p>For I have dipped my fingers in my heart&apos;s blood</p>
               <p>So what if my lips have been sealed shut?</p>
