@@ -433,9 +433,9 @@ export default function FehmidaPage() {
             </motion.div>
           </div>
 
-          {/* ── MOBILE content — same sequence, smaller ── */}
-          <div className="md:hidden relative z-10 w-full flex flex-col gap-8 pt-24">
-            {/* Top: hidden during transcript, reveals name → paragraph */}
+          {/* ── MOBILE content — fills full hero, name/desc top, transcript bottom ── */}
+          <div className="md:hidden absolute inset-0 z-10 flex flex-col gap-56 px-7 pt-[160px]">
+            {/* TOP: name → description */}
             <AnimatePresence mode="wait">
               {heroPhase === 'name' && (
                 <motion.p
@@ -462,9 +462,11 @@ export default function FehmidaPage() {
                   Amidst the smoke and chaos, the voice of <em>Fehmida Riaz</em> transformed fear into collective reckoning.
                 </motion.p>
               )}
+              {/* placeholder so justify-between doesn't collapse when empty */}
+              {heroPhase === 'transcript' && <span key="mob-empty" />}
             </AnimatePresence>
 
-            {/* Quote bar — always shows current transcript position, freezes on pause */}
+            {/* BOTTOM: transcript bar (sits above the absolute waveform at bottom-10) */}
             <div className="flex items-center gap-5">
               <div className="w-[2px] self-stretch bg-[#E65100] rounded-full shrink-0" />
               <AnimatePresence mode="wait">
@@ -474,7 +476,7 @@ export default function FehmidaPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.4 }}
-                  className="font-urdu text-[22px] leading-[2] text-[#EDE8DC] text-right"
+                  className="font-urdu text-[16px] leading-[2] text-[#EDE8DC] text-right"
                   style={{ direction: 'rtl' }}
                 >
                   {TRANSCRIPT[lineIndex].text}
@@ -489,12 +491,12 @@ export default function FehmidaPage() {
           <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-20 items-center content-start md:content-normal pt-[24px] md:pt-0">
 
             {/* Left: text */}
-            <div className="flex flex-col gap-6 md:gap-8 order-2 md:order-1 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none pb-8">
+            <div className="flex flex-col gap-3 md:gap-8 order-2 md:order-1 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none pb-8">
               {/* label: font-sans font-medium text-[16px] uppercase tracking-[1.2px] */}
               <p className="font-sans font-medium text-[16px] uppercase tracking-[1.2px] text-[#E65100]">
                 Exile and voice
               </p>
-              <div className="font-sans text-[16px] md:text-[24px] leading-[1.25] text-[#EDE8DC] space-y-5">
+              <div className="font-sans text-[14px] md:text-[24px] leading-[1.25] text-[#EDE8DC] space-y-5">
                 <p>
                   In the late 1970s, Fehmida Riaz&apos;s magazine <em>Awaz</em> became a target under General Zia-ul-Haq. The state accused her of sedition; over ten criminal cases were filed, and she was forced to flee Pakistan with her children.
                 </p>
