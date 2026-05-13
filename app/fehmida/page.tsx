@@ -434,7 +434,7 @@ export default function FehmidaPage() {
           </div>
 
           {/* ── MOBILE content — fills full hero, name/desc top, transcript bottom ── */}
-          <div className="md:hidden absolute inset-0 z-10 flex flex-col gap-56 px-7 pt-[160px]">
+          <div className="md:hidden absolute inset-0 z-10 flex flex-col justify-between px-7 pt-[160px] pb-[175px]">
             {/* TOP: name → description */}
             <AnimatePresence mode="wait">
               {heroPhase === 'name' && (
@@ -467,7 +467,7 @@ export default function FehmidaPage() {
             </AnimatePresence>
 
             {/* BOTTOM: transcript bar (sits above the absolute waveform at bottom-10) */}
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 pb-12">
               <div className="w-[2px] self-stretch bg-[#E65100] rounded-full shrink-0" />
               <AnimatePresence mode="wait">
                 <motion.p
@@ -476,7 +476,7 @@ export default function FehmidaPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.4 }}
-                  className="font-urdu text-[16px] leading-[2] text-[#EDE8DC] text-right"
+                  className="font-urdu text-[18px] leading-[2] text-[#EDE8DC] text-right"
                   style={{ direction: 'rtl' }}
                 >
                   {TRANSCRIPT[lineIndex].text}
