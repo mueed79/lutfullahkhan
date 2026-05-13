@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ChevronUp } from "lucide-react";
 import StickyAudioPlayer from "@/components/media/StickyAudioPlayer";
 import RelatedStories from "@/components/layout/RelatedStories";
+import DiaryModal from "@/components/ui/DiaryModal";
 
 // Drop audio files into /public/audio/ with these exact filenames:
 //   faiz-s2.mp3  →  Recording Sessions section
@@ -29,6 +30,7 @@ export default function FaizPage() {
   const [isUserSelected, setIsUserSelected] = useState(false); // user manually picked track
   const [isPinned, setIsPinned] = useState(false); // audio is pinned, don't auto-change
   const [showLetterTranscription, setShowLetterTranscription] = useState(false);
+  const [diaryOpen, setDiaryOpen] = useState(false);
   const [sialkotExpanded, setSialkotExpanded] = useState(false);
   const [beirutExpanded, setBeirutExpanded] = useState(false);
 
@@ -165,6 +167,7 @@ export default function FaizPage() {
   }, []);
 
   return (
+    <>
     <div
       ref={containerRef}
       className="h-screen overflow-y-scroll bg-[#1C1917] text-[#FAF5EF] overflow-x-hidden"
@@ -175,7 +178,7 @@ export default function FaizPage() {
         className="h-screen w-full flex-shrink-0 relative flex flex-col items-center justify-center px-6 overflow-hidden"
         style={{ background: 'linear-gradient(180deg, #141312 0%, #232222 100%)' }}
       >
-        <div className="absolute right-[-5%] bottom-[10%] w-[480px] h-[480px] mix-blend-color-dodge opacity-90 pointer-events-none z-[10]">
+        <div className="absolute right-[-120px] md:right-[-80px] bottom-[-60px] md:bottom-[-80px] w-[280px] h-[280px] md:w-[480px] md:h-[480px] mix-blend-color-dodge opacity-90 pointer-events-none z-[5]">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -214,7 +217,7 @@ export default function FaizPage() {
         className="h-screen w-full flex-shrink-0 relative flex flex-col md:flex-row text-[#EDE8DC]"
         style={{ background: 'linear-gradient(180deg, #232222 0%, #151413 100%)' }}
       >
-        <div className="w-full md:w-1/2 relative h-[40vh] md:h-full grayscale">
+        <div className="w-full md:w-1/2 relative h-[45vh] md:h-full grayscale">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -225,12 +228,12 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 py-10 md:py-0">
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-16 py-8 md:py-0 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
           <div className="max-w-[480px] space-y-5 md:space-y-8">
             <p className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Recording Sessions, Karachi 1964 – 1984</p>
             <div className="relative pl-6 md:pl-10">
               <div className="absolute left-0 top-2 bottom-2 w-[1px] bg-[#E65100]" />
-              <h2 className="text-[20px] md:text-[28px] font-heading font-light leading-snug">
+              <h2 className="text-[18px] md:text-[28px] font-heading font-light leading-snug">
                 &ldquo;Once he entered my studio, he lost no time in preliminary conversation – he did not believe in small talk. He knew what he had to recite and I knew what I had to record.&rdquo;
               </h2>
             </div>
@@ -243,6 +246,12 @@ export default function FaizPage() {
               </div>
               <span className="text-[12px] md:text-[13px] font-bold uppercase tracking-[0.2em]">His voice is playing below.</span>
             </div>
+            <button
+              onClick={() => setDiaryOpen(true)}
+              className="flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold opacity-60 hover:opacity-100 hover:underline transition-opacity"
+            >
+              Read Lutfullah Khan&apos;s Full Account <ChevronUp className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
@@ -264,7 +273,7 @@ export default function FaizPage() {
               >
                 <p className="text-[10px] md:text-[12px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1911 – Sialkot</p>
                 {/* main text: text-[18px] md:text-[24px] ← font size */}
-                <p className="text-[18px] md:text-[24px] font-heading font-light leading-[1.5] md:leading-[1.4]">
+                <p className="text-[20px] md:text-[24px] font-heading font-light leading-[1.5] md:leading-[1.4]">
                   Born in Sialkot in 1911, <span className="text-[#E65100] italic">Faiz Ahmad Faiz</span> stands as one of South Asia's most resonant voices. A poet of resistance and of the people, his vision of Pakistan was inseparable from a broader commitment to justice, humanity, and solidarity across borders.
                 </p>
                 <button
@@ -322,14 +331,14 @@ export default function FaizPage() {
 
 
       {/* 4. 1951 – Resistance in confinement (dark bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex flex-col justify-between bg-[#1C1917] text-[#EDE8DC] px-8 md:px-24 py-12 md:py-24">
+      <section className="h-screen w-full flex-shrink-0 relative flex flex-col bg-[#1C1917] justify-between text-[#EDE8DC] px-6 md:px-24 pt-16 pb-32 md:py-24">
 
         {/* Top-left: label + prose */}
-        <div className="max-w-[580px] space-y-6 md:space-y-8">
+        <div className="max-w-[580px] space-y-4 md:space-y-8">
           {/* label: text-[10px] md:text-[12px] ← size */}
           <p className="text-[10px] md:text-[12px] uppercase tracking-[0.3em] text-[#E65100] font-bold">1951 – Resistance in confinement</p>
           {/* prose: text-[16px] md:text-[18px] ← size */}
-          <div className="space-y-4 md:space-y-5 text-[16px] md:text-[18px] font-regular leading-relaxed opacity-80">
+          <div className="space-y-4 md:space-y-5 text-[14px] md:text-[18px] font-regular leading-relaxed opacity-80">
             <p>
               In 1951, he was arrested in the famous Rawalpindi Conspiracy Case and spent four years in jails across Pakistan, often in solitary confinement.
             </p>
@@ -340,10 +349,10 @@ export default function FaizPage() {
         </div>
 
         {/* Bottom-right: Urdu poetry + orange line + translation */}
-        <div className="self-end flex items-start gap-5 md:gap-8">
-          <div className="space-y-4 md:space-y-6 text-right">
+        <div className="self-end flex items-start gap-6 md:gap-8">
+          <div className="space-y-2 md:space-y-6 text-right">
             {/* Urdu: text-[20px] md:text-[26px] ← size */}
-            <p className="text-[20px] md:text-[26px] font-heading leading-snug" style={{ direction: 'rtl' }}>
+            <p className="text-[16px] md:text-[26px] font-heading leading-snug" style={{ direction: 'rtl' }}>
               متاعِ لوح و قلم چھن گئی تو کیا غم ہے<br/>
               کہ خونِ دل میں ڈبو لی ہیں انگلیاں میں نے<br/>
               زبان پہ مہر لگی ہے تو کیا
@@ -452,7 +461,10 @@ export default function FaizPage() {
                 </p>
               </div>
             </div>
-            <button className="flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold opacity-60 hover:opacity-100 transition-opacity">
+            <button
+              onClick={() => setDiaryOpen(true)}
+              className="flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold opacity-60 hover:opacity-100 hover:underline transition-opacity"
+            >
               READ LUTFULLAH KHAN&apos;S FULL ACCOUNT <ChevronUp className="w-4 h-4" />
             </button>
           </div>
@@ -580,5 +592,8 @@ export default function FaizPage() {
         variant={playerVariant}
       />
     </div>
+
+    <DiaryModal isOpen={diaryOpen} onClose={() => setDiaryOpen(false)} />
+    </>
   );
 }

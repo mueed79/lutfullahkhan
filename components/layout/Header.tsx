@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, Menu, X } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { useState, useEffect, useRef } from "react";
 import { stories } from "@/lib/data";
@@ -31,11 +31,21 @@ export default function Header() {
   const [scrolledDown, setScrolledDown] = useState(false);
   const [scrolled, setScrolled]         = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   /* ── Non-homepage: visible on load → hidden after first scroll ── */
   const [hoverVisible, setHoverVisible] = useState(true);  // starts true so first setHoverVisible(false) triggers re-render
   const hasScrolledOnce = useRef(false);   // becomes true after first scroll-down
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /* ── Detect mobile ────────────────────────────────────────────── */
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   /* ── Homepage: native scroll tracking ──────────────────────────── */
   useEffect(() => {
@@ -67,16 +77,23 @@ export default function Header() {
         hasScrolledOnce.current = true;
         setHoverVisible(false);
         setIsDropdownOpen(false);
+        setIsMobileMenuOpen(false);
       }
       prevScrollY = y;
     };
     const onContainerScroll = (e: Event) => {
       const { scrollTop } = (e as CustomEvent<{ scrollTop: number }>).detail;
-      if (scrollTop > 50) {
+      const sectionHeight = window.innerHeight;
+      if (scrollTop < sectionHeight * 0.5) {
+        // Back at the first section — always visible
+        hasScrolledOnce.current = false;
+        setHoverVisible(true);
+      } else {
         hasScrolledOnce.current = true;
         setHoverVisible(false);
         setIsDropdownOpen(false);
       }
+      setIsMobileMenuOpen(false);
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
@@ -87,9 +104,9 @@ export default function Header() {
     };
   }, [isHomepage]);
 
-  /* ── Non-homepage: hover-to-reveal (only active after first scroll) */
+  /* ── Non-homepage: hover-to-reveal (only on desktop after first scroll) */
   useEffect(() => {
-    if (isHomepage) return;
+    if (isHomepage || isMobile) return;
 
     const onMouseMove = (e: MouseEvent) => {
       // Don't run hide logic until the user has scrolled at least once
@@ -120,7 +137,7 @@ export default function Header() {
 
   /* ── Decide visibility ─────────────────────────────────────────── */
   // Homepage: visible until scroll-down
-  // Other pages: visible on load (hasScrolledOnce=false), then hover-only
+  // Other pages: visible on top section only; on mobile hides after scroll, on desktop uses hover-reveal
   const isHidden = isHomepage
     ? scrolledDown
     : (hasScrolledOnce.current ? !hoverVisible : false);
@@ -144,7 +161,7 @@ export default function Header() {
       <div className="container mx-auto flex items-center justify-between pointer-events-auto">
         <Logo light={true} />
 
-        <nav className="flex items-center gap-6 md:gap-10">
+        <nav className="hidden md:flex items-center gap-6 md:gap-10">
           {/* Stories dropdown — items from lib/data.ts → stories array */}
           <div
             className="relative"
@@ -190,7 +207,41 @@ export default function Header() {
             <Search className="h-5 w-5" strokeWidth={1.5} />
           </button>
         </nav>
+
+        {/* Mobile hamburger menu */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden text-[var(--text-text-light-primary)] hover:text-[var(--text-text-brand-primary)] transition-colors"
+        >
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {/* Mobile menu panel */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-[#1C1917] border-b border-white/20 px-6 py-4"
+          >
+            <div className="space-y-4">
+              {stories.map((story) => (
+                <Link
+                  key={story.name}
+                  href={story.slug ? `/${story.slug}` : "#"}
+                  className="block text-[14px] text-white hover:text-[var(--text-text-brand-primary)] transition-colors font-medium py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {story.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

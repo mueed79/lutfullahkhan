@@ -60,7 +60,7 @@ export default function RelatedStories({
           const inner = (
             <div className="flex flex-col gap-4 md:gap-5 flex-1 min-w-0">
               {/* Image area */}
-              <div className={`relative w-full ${heightClass} bg-[#2b2a29] overflow-hidden`}>
+              <div className={`relative w-full ${heightClass} bg-[#2b2a29] overflow-hidden rounded`}>
                 {story.coverImage ? (
                   <Image
                     src={story.coverImage}
