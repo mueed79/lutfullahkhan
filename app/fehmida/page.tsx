@@ -10,8 +10,8 @@ import RelatedStories from "@/components/layout/RelatedStories";
 // Audio track list — user will finalise audio file assignments later.
 // Player shows: kab se dil | paish lafz (active on section 3) | badan dareeda
 const TRACKS = [
-  { src: '/audio/fehmida-s2.mp3', title: 'Paish Lafz',    name: 'Paish Lafz' },
   { src: '/audio/fehmida-s3.mp3', title: 'Shehar Walo',    name: 'Shehar Walo' },
+  { src: '/audio/fehmida-s2.mp3', title: 'Paish Lafz',    name: 'Paish Lafz' },
   { src: '/audio/fehmida-s4.mp3', title: 'Badan Dareeda', name: 'badan dareeda' },
 ];
 
@@ -485,16 +485,16 @@ export default function FehmidaPage() {
         </section>
 
         {/* 2. Exile and Voice */}
-        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex items-center bg-[#262626] text-[#EDE8DC] px-7 md:px-12">
-          <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+        <section className="h-screen w-full flex-shrink-0 relative overflow-hidden flex bg-[#262626] text-[#EDE8DC] px-7 md:px-12">
+          <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-20 items-center content-start md:content-normal pt-[24px] md:pt-0">
 
             {/* Left: text */}
-            <div className="flex flex-col gap-6 md:gap-8 order-2 md:order-1 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
+            <div className="flex flex-col gap-6 md:gap-8 order-2 md:order-1 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none pb-8">
               {/* label: font-sans font-medium text-[16px] uppercase tracking-[1.2px] */}
               <p className="font-sans font-medium text-[16px] uppercase tracking-[1.2px] text-[#E65100]">
                 Exile and voice
               </p>
-              <div className="font-sans text-[18px] md:text-[24px] leading-[1.25] text-[#EDE8DC] space-y-5">
+              <div className="font-sans text-[16px] md:text-[24px] leading-[1.25] text-[#EDE8DC] space-y-5">
                 <p>
                   In the late 1970s, Fehmida Riaz&apos;s magazine <em>Awaz</em> became a target under General Zia-ul-Haq. The state accused her of sedition; over ten criminal cases were filed, and she was forced to flee Pakistan with her children.
                 </p>
@@ -508,7 +508,7 @@ export default function FehmidaPage() {
             </div>
 
             {/* Right: photo */}
-            <div className="order-1 md:order-2 flex flex-col gap-4">
+            <div className="order-1 md:order-2 flex flex-col gap-2">
               <div className="relative w-full h-[280px] md:h-[346px] bg-[#1C1917] overflow-hidden rounded">
                 <Image
                   src="/fehmida-cover.jpg"

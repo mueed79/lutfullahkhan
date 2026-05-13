@@ -153,6 +153,7 @@ export default function Header() {
     : (isDropdownOpen || (!isFirstSection && hoverVisible));
 
   return (
+    <>
     <motion.header
       initial={{ y: 0 }}
       animate={{
@@ -222,31 +223,56 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile menu panel */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden bg-[#1C1917] border-b border-white/20 px-6 py-4"
-          >
-            <div className="space-y-4">
-              {stories.map((story) => (
+    </motion.header>
+
+    {/* ── Mobile full-screen menu ───────────────────────────────────────
+        z-[60] sits above the sticky header (z-50)                      */}
+    <AnimatePresence>
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, x: '100%' }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: '100%' }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[60] bg-[#1C1917] flex flex-col md:hidden"
+        >
+          {/* Top bar: logo + close */}
+          <div className="flex items-center justify-between px-6 h-[80px] border-b border-white/10 shrink-0">
+            <Logo light={true} />
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-white/70 hover:text-white transition-colors"
+              aria-label="Close menu"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Stories list */}
+          <nav className="flex-1 overflow-y-auto px-6 py-10 flex flex-col gap-1">
+            <p className="text-[11px] tracking-[0.12em] uppercase text-white/35 font-sans mb-6">
+              Stories
+            </p>
+            {stories.map((story, idx) => (
+              <motion.div
+                key={story.name}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 + idx * 0.06, duration: 0.3, ease: 'easeOut' }}
+              >
                 <Link
-                  key={story.name}
-                  href={story.slug ? `/${story.slug}` : "#"}
-                  className="block text-[14px] text-white hover:text-[var(--text-text-brand-primary)] transition-colors font-medium py-2"
+                  href={story.slug ? `/${story.slug}` : '#'}
+                  className="block py-4 border-b border-white/8 text-[22px] font-medium text-white hover:text-[var(--text-text-brand-primary)] transition-colors font-body"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {story.name}
                 </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+              </motion.div>
+            ))}
+          </nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }

@@ -80,8 +80,8 @@ export default function RelatedStories({
 
               {/* Text */}
               <div className="space-y-1">
-                {/* tagline: font-display text-[18px] md:text-[20px] */}
-                <p className="font-display text-[18px] md:text-[20px] leading-[1.1] text-[#2b2a29]">
+                {/* tagline: font-display text-[16px] md:text-[20px] */}
+                <p className="font-display text-[16px] md:text-[20px] leading-[1.1] text-[#2b2a29]">
                   {story.tagline}
                 </p>
                 {/* name: font-sans text-[13px] md:text-[15px] */}
