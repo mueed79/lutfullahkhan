@@ -221,7 +221,7 @@ export default function FaizPage() {
         </div>
 
         {/* ── MOBILE layout ── */}
-        <div className="md:hidden absolute top-0 left-0 w-full h-full flex flex-col px-7 pt-40 z-20">
+        <div className="md:hidden absolute top-0 left-0 w-full h-full flex flex-col px-7 pt-32 z-20">
           {/* Decorative quote mark */}
           <span className="text-[96px] text-[#2e291f] font-bold select-none" style={{ lineHeight: '56px' }}>&ldquo;</span>
 
@@ -286,7 +286,7 @@ export default function FaizPage() {
             transition={{ duration: 1.5 }}
             className="relative w-full h-full"
           >
-            <Image src="/faiz-portrait-large.png" alt="Faiz portrait" fill className="object-cover" />
+            <Image src="/faiz-portrait-large.png" alt="Faiz portrait" fill className="object-cover object-top" />
           </motion.div>
         </div>
 
