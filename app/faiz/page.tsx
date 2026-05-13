@@ -195,7 +195,7 @@ export default function FaizPage() {
     >
       {/* 1. Hero */}
       <section
-        className="h-screen w-full flex-shrink-0 relative overflow-hidden flex flex-col items-center justify-center px-6"
+        className="h-screen w-full flex-shrink-0 relative overflow-hidden flex flex-col items-center justify-center px-7"
         style={{ background: 'linear-gradient(180deg, #141312 0%, #232222 100%)' }}
       >
         {/* Spool — mobile only */}
@@ -221,7 +221,7 @@ export default function FaizPage() {
         </div>
 
         {/* ── MOBILE layout ── */}
-        <div className="md:hidden absolute top-0 left-0 w-full h-full flex flex-col px-6 pt-40 z-20">
+        <div className="md:hidden absolute top-0 left-0 w-full h-full flex flex-col px-7 pt-40 z-20">
           {/* Decorative quote mark */}
           <span className="text-[96px] text-[#2e291f] font-bold select-none" style={{ lineHeight: '56px' }}>&ldquo;</span>
 
@@ -290,19 +290,20 @@ export default function FaizPage() {
           </motion.div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-16 py-8 md:py-0 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
+        <div className="w-full md:w-1/2 flex flex-col justify-center px-7 md:px-16 py-8 md:py-0 overflow-y-auto md:overflow-visible max-h-[55vh] md:max-h-none">
           <div className="max-w-[480px] space-y-5 md:space-y-8">
             <p className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] opacity-40 font-bold">Recording Sessions, Karachi 1964 – 1984</p>
             <div className="relative pl-6 md:pl-10">
-              <div className="absolute left-0 top-2 bottom-2 w-[1px] bg-[#E65100]" />
-              <h2 className="text-[18px] md:text-[28px] font-heading font-light leading-snug">
+              <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-[#E65100]" />
+              <h2 className="text-[18px] md:text-[28px] font-heading font-regular leading-snug">
                 &ldquo;Once he entered my studio, he lost no time in preliminary conversation – he did not believe in small talk. He knew what he had to recite and I knew what I had to record.&rdquo;
               </h2>
             </div>
-            <p className="text-[13px] md:text-[15px] opacity-60 leading-relaxed font-regular">
-              Over twenty years, Faiz visited Lutfullah Khan&apos;s home whenever he passed through Karachi. He would settle at the table, and within seconds, begin reciting into the microphone. Poems from published books, from old magazines, from odd couplets copied into somebody&apos;s diary.
+            <p className="text-[14px] md:text-[15px] opacity-60 leading-relaxed font-regular">
+              <span className="md:hidden">Over twenty years, Faiz visited Lutfullah Khan&apos;s home whenever he passed through Karachi. He would settle at the table, and within seconds, begin reciting into the microphone.</span>
+              <span className="hidden md:inline">Over twenty years, Faiz visited Lutfullah Khan&apos;s home whenever he passed through Karachi. He would settle at the table, and within seconds, begin reciting into the microphone. Poems from published books, from old magazines, from odd couplets copied into somebody&apos;s diary.</span>
             </p>
-            <div className="flex items-center gap-4 text-[#E65100] pt-2">
+            <div className="hidden md:flex items-center gap-4 text-[#E65100] pt-2">
               <div className="flex gap-1.5 items-center">
                 {[1,2,3].map(i => <div key={i} className={`w-[2px] bg-current ${i===1 ? 'h-3' : i===2 ? 'h-5' : 'h-2'}`} />)}
               </div>
@@ -319,7 +320,7 @@ export default function FaizPage() {
       </section>
 
       {/* 3. 1911 – Sialkot */}
-      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-8 md:px-24 overflow-hidden">
+      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-7 md:px-24 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto relative z-10">
 
           {/* Collapsed state */}
@@ -393,7 +394,7 @@ export default function FaizPage() {
 
 
       {/* 4. 1951 – Resistance in confinement (dark bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex flex-col bg-[#1C1917] justify-between text-[#EDE8DC] px-6 md:px-24 pt-16 pb-32 md:py-24">
+      <section className="h-screen w-full flex-shrink-0 relative flex flex-col bg-[#1C1917] justify-between text-[#EDE8DC] px-7 md:px-24 pt-16 pb-32 md:py-24">
 
         {/* Top-left: label + prose */}
         <div className="max-w-[580px] space-y-4 md:space-y-8">
@@ -411,10 +412,10 @@ export default function FaizPage() {
         </div>
 
         {/* Bottom-right: Urdu poetry + orange line + translation */}
-        <div className="self-end flex items-start gap-6 md:gap-8">
+        <div className="self-end flex items-stretch gap-6 md:gap-8">
           <div className="space-y-2 md:space-y-6 text-right">
             {/* Urdu: text-[20px] md:text-[26px] ← size */}
-            <p className="text-[18px] md:text-[26px] font-heading leading-snug" style={{ direction: 'rtl' }}>
+            <p className="text-[18px] md:text-[26px] font-urdu leading-[2.2]" style={{ direction: 'rtl' }}>
               متاعِ لوح و قلم چھن گئی تو کیا غم ہے<br/>
               کہ خونِ دل میں ڈبو لی ہیں انگلیاں میں نے<br/>
               زبان پہ مہر لگی ہے تو کیا
@@ -426,14 +427,14 @@ export default function FaizPage() {
               <p>So what if my lips have been sealed shut?</p>
             </div>
           </div>
-          {/* orange vertical rule: w-[3px] h-[160px] md:h-[220px] */}
-          <div className="w-[3px] bg-[#E65100] h-[160px] md:h-[220px] mt-1 shrink-0 rounded-full" />
+          {/* orange vertical rule */}
+          <div className="w-[3px] bg-[#E65100] self-stretch shrink-0 rounded-full" />
         </div>
 
       </section>
 
       {/* 5. 1977 – Beirut (light bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-8 md:px-24 overflow-hidden">
+      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-7 md:px-24 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto relative z-10">
           <AnimatePresence mode="wait">
             {!beirutExpanded ? (
@@ -500,7 +501,7 @@ export default function FaizPage() {
       </section>
 
       {/* 6. Recording Sessions, Karachi 1964 – 1984 (dark bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#1C1917] text-[#EDE8DC] px-8 md:px-24">
+      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#1C1917] text-[#EDE8DC] px-7 md:px-24">
         <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="space-y-6 md:space-y-8 order-2 md:order-1">
             <p className="text-[12px] md:text-[13px] uppercase tracking-[0.3em] opacity-90 font-bold">RECORDING SESSIONS, KARACHI 1964 – 1984</p>
@@ -551,15 +552,15 @@ export default function FaizPage() {
                     className="absolute inset-0 bg-[#FAF5EF] flex flex-col items-center justify-center p-6 md:p-10 text-[#1C1917]"
                   >
                     <div className="space-y-6 text-center" style={{ direction: 'rtl' }}>
-                      <p className="text-[18px] md:text-[20px] font-heading leading-relaxed tracking-tight">
+                      <p className="text-[18px] md:text-[20px] font-urdu leading-[2.2] tracking-tight">
                         ذکر پھر کیجیے اس گوشہِ تنہائی کا<br/>
                         جس میں ہر لحظہ بپا رہتی ہے اک محفلِ لطف
                       </p>
-                      <p className="text-[18px] md:text-[20px] font-heading leading-relaxed tracking-tight">
+                      <p className="text-[18px] md:text-[20px] font-urdu leading-[2.2] tracking-tight">
                         منزلِ نغمہ گراں، خانہِ شیریں سخناں<br/>
                         سر بہ سر منبعِ سو لطف ہے، یہ منزلِ لطف
                       </p>
-                      <p className="text-[18px] md:text-[20px] font-heading leading-relaxed tracking-tight">
+                      <p className="text-[18px] md:text-[20px] font-urdu leading-[2.2] tracking-tight">
                         فیض احمد فیض
                       </p>
                     </div>
@@ -586,7 +587,7 @@ export default function FaizPage() {
       </section>
 
       {/* 7. Final Days (dark bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex items-center justify-center px-6">
+      <section className="h-screen w-full flex-shrink-0 relative flex items-center justify-center px-7">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -604,7 +605,7 @@ export default function FaizPage() {
       </section>
 
       {/* 8. Bol — "Speak" (light bg) */}
-      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-8 md:px-24 overflow-hidden">
+      <section className="h-screen w-full flex-shrink-0 relative flex items-center bg-[#F1E1D0] text-[#1C1917] px-7 md:px-24 overflow-hidden">
         <div className="max-w-[1400px] w-full mx-auto flex justify-end relative z-10">
           <div className="max-w-[620px] space-y-10 md:space-y-14">
             <div className="space-y-5 md:space-y-6 text-[16px] md:text-[18px] font-regular leading-relaxed">
@@ -615,9 +616,9 @@ export default function FaizPage() {
               </p>
               <p>Famously, he calls out:</p>
             </div>
-            <div className="flex items-start gap-5 md:gap-6 justify-end">
+            <div className="flex items-stretch gap-5 md:gap-6 justify-end">
               <div className="space-y-4 md:space-y-6 text-right">
-                <p className="text-[24px] md:text-[32px] font-heading leading-snug" style={{ direction: 'rtl' }}>
+                <p className="text-[24px] md:text-[32px] font-urdu leading-[2.2]" style={{ direction: 'rtl' }}>
                   بول کہ لب آزاد ہیں تیرے<br />
                   بول زبان اب تک تیری ہے
                 </p>
@@ -626,7 +627,7 @@ export default function FaizPage() {
                   <p>Speak, your tongue is still yours.</p>
                 </div>
               </div>
-              <div className="w-[3px] bg-[#E65100] h-[140px] md:h-[180px] mt-1 shrink-0 rounded-full" />
+              <div className="w-[3px] bg-[#E65100] self-stretch shrink-0 rounded-full" />
             </div>
           </div>
         </div>

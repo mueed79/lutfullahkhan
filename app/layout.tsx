@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -17,6 +18,14 @@ const neueMontreal = localFont({
     { path: "../public/fonts/NeueMontreal-BoldItalic.otf", weight: "700", style: "italic" },
   ],
   variable: "--font-neue-montreal",
+});
+
+// Configure Noto Nastaliq Urdu (Urdu RTL text)
+const notoNastaliqUrdu = Noto_Nastaliq_Urdu({
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  variable: "--font-noto-nastaliq",
+  display: "swap",
 });
 
 // Configure PP Editorial New (Display)
@@ -45,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${neueMontreal.variable} ${ppEditorialNew.variable} h-full antialiased`}
+      className={`${neueMontreal.variable} ${ppEditorialNew.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[var(--background-bg-light-primary)] text-[var(--text-text-black-primary)]">
         <Header />

@@ -109,7 +109,7 @@ const StickyAudioPlayer: React.FC<StickyAudioPlayerProps> = ({
             />
 
             {/* ── MOBILE LAYOUT (hidden on md+) ───────────────────────── */}
-            <div className="flex md:hidden items-center gap-4 px-4 py-3">
+            <div className="flex md:hidden items-center gap-4 px-4 pt-3 pb-5">
 
               {/* Waveform */}
               <div className={`flex items-center gap-[2px] h-10 shrink-0 overflow-hidden transition-opacity duration-500 ${waveOpacity}`}>

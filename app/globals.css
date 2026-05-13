@@ -12,6 +12,8 @@
   --font-sans: var(--font-neue-montreal), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-pp-editorial-new), serif;
   --font-mono: ui-monospace, monospace;
+  /* font-urdu → Urdu/Nastaliq poetry text */
+  --font-urdu: var(--font-noto-nastaliq), serif;
 
   /* ── FONT WEIGHTS ──────────────────────────────────────────
      Usage: className="font-ultra-light"  → thin/elegant look
